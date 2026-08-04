@@ -1,0 +1,146 @@
+{
+  "host": null,
+  "current_version": "22.04",
+  "target_version": "24.04",
+  "summary": "The upgrade from Ubuntu 22.04 to 24.04 will introduce several changes and potential issues, particularly affecting Apache2, PHP, GCC, init, and SSH configurations.",
+  "claims": [
+    {
+      "text": "Apache2 in Ubuntu 24.04 supports mod_md configurations via a local tailscale daemon and uses pcre2 (10.x) for regular expression evaluation instead of the deprecated pcre (8.x).",
+      "chunk_ids": [
+        "24.04_apache2_1"
+      ],
+      "category": "package",
+      "affected_package": "apache2",
+      "support_score": 0.755,
+      "sources": [
+        {
+          "chunk_id": "24.04_apache2_1",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-07-06T09:59:33.921124"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "PHP in Ubuntu 24.04 now automatically restarts Apache2 after an upgrade, whereas previously it would only notify the user to manually restart the service.",
+      "chunk_ids": [
+        "24.04_php_1"
+      ],
+      "category": "package",
+      "affected_package": "php",
+      "support_score": 0.584,
+      "sources": [
+        {
+          "chunk_id": "24.04_php_1",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-07-06T09:59:33.921124"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Ubuntu 24.04 uses systemd v255.4, which introduces several new features and changes in how services are managed.",
+      "chunk_ids": [
+        "24.04_systemd-v255-4_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.705,
+      "sources": [
+        {
+          "chunk_id": "24.04_systemd-v255-4_0",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-07-06T09:59:33.921124"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "OpenSSH in Ubuntu 24.04 uses systemd socket activation by default, with settings from /etc/ssh/sshd_config and snippets from /etc/ssh/sshd_config.d/ being read to configure the ssh.socket unit.",
+      "chunk_ids": [
+        "24.04_openssh_0"
+      ],
+      "category": "package",
+      "affected_package": "openssh",
+      "support_score": 0.948,
+      "sources": [
+        {
+          "chunk_id": "24.04_openssh_0",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-07-06T09:59:33.921124"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Ubuntu 24.04 includes known issues, such as significant bugs that users may encounter, which are documented in the release notes.",
+      "chunk_ids": [
+        "24.04_known-issues_0"
+      ],
+      "category": "known_issue",
+      "affected_package": null,
+      "support_score": 0.718,
+      "sources": [
+        {
+          "chunk_id": "24.04_known-issues_0",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-07-06T09:59:33.921124"
+        }
+      ],
+      "flags": []
+    }
+  ],
+  "not_found_notes": [
+    "A draft statement was removed because it lacked a verifiable source (unverified_entity): \"The GCC compiler in Ubuntu 24.04 is updated to version 14, which includes significant improvements and security-hardenin\""
+  ],
+  "rejected_claims": [
+    {
+      "text": "The GCC compiler in Ubuntu 24.04 is updated to version 14, which includes significant improvements and security-hardening features.",
+      "reject_reason": "unverified_entity",
+      "missing_entities": [
+        "security-hardening"
+      ],
+      "support_score": null,
+      "chunk_ids": [
+        "24.04_toolchain-upgrades_0"
+      ]
+    }
+  ],
+  "package_candidates": [
+    "apache2",
+    "gcc",
+    "google-chrome-stable",
+    "hostname",
+    "init",
+    "make",
+    "php",
+    "pipewire",
+    "snapd",
+    "ssh",
+    "ubuntu-desktop",
+    "ubuntu-minimal"
+  ],
+  "affected_packages": [
+    "apache2",
+    "openssh",
+    "php"
+  ],
+  "freshness": {
+    "22.04": {
+      "scraped_at": "2026-07-06T10:26:42.906102",
+      "stale_fallback": false
+    },
+    "24.04": {
+      "scraped_at": "2026-07-06T09:59:33.921124",
+      "stale_fallback": false
+    }
+  },
+  "warnings": [],
+  "stats": {
+    "draft_claims": 6,
+    "verified": 5,
+    "rejected": 1,
+    "flagged": 0
+  },
+  "duration_s": 58.7
+}

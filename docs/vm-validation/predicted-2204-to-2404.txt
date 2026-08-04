@@ -1,0 +1,2 @@
+# Tahmin zamanı: upgrade ÖNCESİ | hedef: 24.04 | envanter: 28
+(model tahmini: kaldırma yok)

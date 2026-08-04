@@ -1,0 +1,86 @@
+{
+  "sprint": "S5 update_plan_3 — kabul matrisi",
+  "timestamp": "2026-07-29 13:43",
+  "configs": {
+    "eski": {
+      "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+      "SIMILARITY_THRESHOLD": "0.30"
+    },
+    "yeni": {}
+  },
+  "llm": "qwen2.5:7b (varsayılan)",
+  "results": [
+    {
+      "ok": true,
+      "seconds": 73.5,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 8,
+      "verified": 8,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.719,
+        0.598,
+        0.872,
+        0.945,
+        0.934,
+        0.707,
+        0.736,
+        0.764
+      ],
+      "affected_packages": [
+        "apache2",
+        "nginx",
+        "openssh-server",
+        "php",
+        "postgresql"
+      ],
+      "config": "eski",
+      "scenario": "ssh_2204_2404"
+    },
+    {
+      "ok": true,
+      "seconds": 82.4,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 8,
+      "verified": 8,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 1,
+      "flag_terms": [
+        "backend"
+      ],
+      "support_scores": [
+        0.85,
+        0.886,
+        0.93,
+        0.865,
+        0.979,
+        0.862,
+        0.905,
+        0.823
+      ],
+      "affected_packages": [
+        "apache2",
+        "nginx",
+        "postgresql"
+      ],
+      "config": "yeni",
+      "scenario": "ssh_2204_2404"
+    }
+  ]
+}

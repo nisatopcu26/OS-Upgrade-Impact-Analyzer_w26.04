@@ -1,0 +1,91 @@
+{
+  "sprint": "S5 update_plan_3 — kabul matrisi",
+  "timestamp": "2026-07-29 13:48",
+  "configs": {
+    "eski": {
+      "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+      "SIMILARITY_THRESHOLD": "0.30"
+    },
+    "yeni": {}
+  },
+  "llm": "qwen2.5:7b (varsayılan)",
+  "results": [
+    {
+      "ok": true,
+      "seconds": 95.3,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 9,
+      "verified": 7,
+      "rejected": 2,
+      "reject_reasons": [
+        "fabricated_term",
+        "fabricated_term"
+      ],
+      "rejected_texts": [
+        "The upgrade process for Ubuntu 18.04 to 20.04 will involve reorganizing DPDK dependencies, leading t",
+        "PHP 7.4 will be installed as a new feature, bringing several improvements and deprecated functionali"
+      ],
+      "flags": 2,
+      "flag_terms": [
+        "glob",
+        "particularly"
+      ],
+      "support_scores": [
+        0.813,
+        0.474,
+        0.821,
+        0.595,
+        0.768,
+        0.843,
+        0.36
+      ],
+      "affected_packages": [
+        "cloud-init",
+        "netplan.io",
+        "python3"
+      ],
+      "config": "eski",
+      "scenario": "ssh_1804_2004"
+    },
+    {
+      "ok": true,
+      "seconds": 58.2,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 6,
+      "verified": 5,
+      "rejected": 1,
+      "reject_reasons": [
+        "unverified_entity"
+      ],
+      "rejected_texts": [
+        "Cloud-init was updated to version 20.1-10, which includes notable features such as basic support for"
+      ],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.735,
+        0.877,
+        0.924,
+        0.891,
+        0.906
+      ],
+      "affected_packages": [
+        "netplan.io",
+        "php",
+        "python3"
+      ],
+      "config": "yeni",
+      "scenario": "ssh_1804_2004"
+    }
+  ]
+}

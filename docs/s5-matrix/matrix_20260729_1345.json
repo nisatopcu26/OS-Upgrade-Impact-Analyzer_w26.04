@@ -1,0 +1,83 @@
+{
+  "sprint": "S5 update_plan_3 — kabul matrisi",
+  "timestamp": "2026-07-29 13:45",
+  "configs": {
+    "eski": {
+      "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+      "SIMILARITY_THRESHOLD": "0.30"
+    },
+    "yeni": {}
+  },
+  "llm": "qwen2.5:7b (varsayılan)",
+  "results": [
+    {
+      "ok": true,
+      "seconds": 67.8,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 7,
+      "verified": 3,
+      "rejected": 4,
+      "reject_reasons": [
+        "fabricated_term",
+        "fabricated_term",
+        "unverified_entity",
+        "unverified_entity"
+      ],
+      "rejected_texts": [
+        "The user's installed gcc package will be updated to version 11.2.0, which may require recompiling an",
+        "The user's hostname package will be updated to version 3.0, which may affect existing configurations",
+        "The cloud-init package is affected by a bug in version 22.2.1-0ubuntu0~22.04.1, which may cause issu",
+        "Users upgrading from Ubuntu 21.10 to 22.04 may encounter known issues, as documented in the release "
+      ],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.603,
+        0.739,
+        0.505
+      ],
+      "affected_packages": [],
+      "config": "eski",
+      "scenario": "ssh_2004_2204"
+    },
+    {
+      "ok": true,
+      "seconds": 58.2,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 6,
+      "verified": 4,
+      "rejected": 2,
+      "reject_reasons": [
+        "fabricated_term",
+        "fabricated_term"
+      ],
+      "rejected_texts": [
+        "GCC has been updated to version 11.2.0, which may affect any applications that depend on this compil",
+        "The upgrade process for Ubuntu 21.10 users is well-documented and should be followed to ensure a smo"
+      ],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.76,
+        0.917,
+        0.873,
+        0.836
+      ],
+      "affected_packages": [
+        "cloud-init"
+      ],
+      "config": "yeni",
+      "scenario": "ssh_2004_2204"
+    }
+  ]
+}

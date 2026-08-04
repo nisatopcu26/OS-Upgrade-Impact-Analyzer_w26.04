@@ -1,0 +1,13 @@
+Bacak: 20.04 → 22.04
+Envanter: önce 29 / sonra 28 paket
+
+Model tahmini (kanıtlı): —
+
+Gerçekte kaybolan (2): ['libfwupdplugin1', 'libxmlb1']
+
+İsabet (TP): —
+Yanlış alarm (FP — tahmin edildi ama klonda duruyor, dpkg -l ile çapraz kontrol et): —
+Kaçan (FN — beklenen: release notes yazmadıysa model göremez): 2 paket
+
+precision = tanımsız (model hiç tahmin üretmedi)
+recall    = 0/2 = 0.00  (düşük olması belgeli sınır)

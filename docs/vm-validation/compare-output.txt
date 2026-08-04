@@ -1,0 +1,12 @@
+Envanter: önce 469 / sonra 430 paket
+
+Model tahmini (kanıtlı): —
+
+Gerçekte kaybolan (41): ['btrfs-tools', 'command-not-found-data', 'libapt-inst2.0', 'libapt-pkg5.0', 'libbind9-160', 'libdns-export1100', 'libdns1100', 'libevent-2.1-6', 'libffi6', 'libgdbm5', 'libhogweed4', 'libicu60', 'libip4tc0', 'libip6tc0', 'libirs160', 'libisc-export169', 'libisc169', 'libisccc160', 'libisccfg160', 'libjson-c3'] ...
+
+İsabet (TP): —
+Yanlış alarm (FP — tahmin edildi ama klonda duruyor, dpkg -l ile çapraz kontrol et): —
+Kaçan (FN — beklenen: release notes yazmadıysa model göremez): 41 paket
+
+precision = tanımsız (model hiç tahmin üretmedi)
+recall    = 0/41 = 0.00  (düşük olması belgeli sınır)

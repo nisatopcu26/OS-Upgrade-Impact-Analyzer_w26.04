@@ -1,0 +1,20 @@
+{
+  "versions": {
+    "18.04": {
+      "url": "https://wiki.ubuntu.com/BionicBeaver/ReleaseNotes",
+      "format": "wiki"
+    },
+    "20.04": {
+      "url": "https://wiki.ubuntu.com/FocalFossa/ReleaseNotes",
+      "format": "wiki"
+    },
+    "22.04": {
+      "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+      "format": "sphinx"
+    },
+    "24.04": {
+      "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+      "format": "sphinx"
+    }
+  }
+}

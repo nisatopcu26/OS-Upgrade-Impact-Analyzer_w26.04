@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Sanal ortam
+.venv/
+venv/
+env/
+
+# Ortam değişkenleri (gizli anahtarlar!)
+.env
+
+# Veri — büyük / üretilen dosyalar repoya girmesin
+data/raw/*
+data/processed/*
+data/chroma/*
+# ama klasör yapısı korunsun
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/chroma/.gitkeep
+
+# Geçici elle-test scriptleri (repoya girmesin)
+test_SPrint_*.py
+
+# IDE
+.vscode/
+.idea/
+
+# İşletim sistemi
+.DS_Store
+
+# Lab sunucu bilgileri (kişisel) — örneği: hosts.json.example
+config/hosts.json

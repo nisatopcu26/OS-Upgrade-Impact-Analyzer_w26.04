@@ -1,0 +1,8 @@
+{
+  "hosts": [
+    {"label": "Lab: Ubuntu 24.04", "host": "kullanici@lab-vm-2404"},
+    {"label": "Lab: Ubuntu 22.04 (web sunucu)", "host": "kullanici@lab-vm-2204"},
+    {"label": "Lab: Ubuntu 20.04 (db sunucu)", "host": "kullanici@lab-vm-2004"},
+    {"label": "Lab: Ubuntu 18.04 (legacy)", "host": "kullanici@lab-vm-1804"}
+  ]
+}

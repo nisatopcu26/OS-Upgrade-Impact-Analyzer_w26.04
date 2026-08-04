@@ -1,0 +1,2 @@
+# Tahmin zamanı: upgrade ÖNCESİ (postgres elle kaldırıldıktan sonra) | envanter: 28
+(model tahmini: kaldırma yok)

@@ -1,0 +1,224 @@
+{
+  "sprint": "S4 update_plan_3 (canlı sistem A/B)",
+  "timestamp": "2026-07-29 12:22",
+  "model": "qwen2.5:7b",
+  "digest": "845dbda0ea48",
+  "config": {
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "similarity_threshold": 0.6,
+    "lexical": "S3 sonrası (-ing toleransı dahil)",
+    "hardware": "RTX 3050 Laptop 4GB VRAM / 15GB RAM"
+  },
+  "repeats": 3,
+  "runs_ok": 9,
+  "runs_fail": 0,
+  "total_draft_claims": 67,
+  "total_verified": 61,
+  "grounding_pass_rate": 0.91,
+  "verified_per_minute": 5.76,
+  "avg_seconds_per_run": 70.6,
+  "reject_reason_hist": {
+    "unverified_entity": 2,
+    "fabricated_term": 4
+  },
+  "runs": [
+    {
+      "ok": true,
+      "seconds": 73.7,
+      "model_field": "qwen2.5:7b",
+      "verified": 8,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 1,
+      "support_scores": [
+        0.85,
+        0.892,
+        0.823,
+        0.769,
+        0.884,
+        0.851,
+        0.886,
+        0.906
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 0,
+      "mem_available_gb_before": 9.9
+    },
+    {
+      "ok": true,
+      "seconds": 78.6,
+      "model_field": "qwen2.5:7b",
+      "verified": 7,
+      "rejected": 2,
+      "reject_reasons": [
+        "unverified_entity",
+        "fabricated_term"
+      ],
+      "flags": 4,
+      "support_scores": [
+        0.85,
+        0.854,
+        0.82,
+        0.747,
+        0.789,
+        0.709,
+        0.849
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 1,
+      "mem_available_gb_before": 10.0
+    },
+    {
+      "ok": true,
+      "seconds": 76.1,
+      "model_field": "qwen2.5:7b",
+      "verified": 7,
+      "rejected": 2,
+      "reject_reasons": [
+        "unverified_entity",
+        "fabricated_term"
+      ],
+      "flags": 4,
+      "support_scores": [
+        0.85,
+        0.854,
+        0.82,
+        0.747,
+        0.789,
+        0.709,
+        0.849
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 2,
+      "mem_available_gb_before": 10.0
+    },
+    {
+      "ok": true,
+      "seconds": 51.8,
+      "model_field": "qwen2.5:7b",
+      "verified": 6,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [
+        0.754,
+        0.895,
+        0.912,
+        0.839,
+        0.758,
+        0.673
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 0,
+      "mem_available_gb_before": 10.1
+    },
+    {
+      "ok": true,
+      "seconds": 49.5,
+      "model_field": "qwen2.5:7b",
+      "verified": 6,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [
+        0.755,
+        0.889,
+        0.902,
+        0.832,
+        0.701,
+        0.786
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 1,
+      "mem_available_gb_before": 9.9
+    },
+    {
+      "ok": true,
+      "seconds": 50.8,
+      "model_field": "qwen2.5:7b",
+      "verified": 6,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [
+        0.755,
+        0.889,
+        0.902,
+        0.832,
+        0.701,
+        0.786
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 2,
+      "mem_available_gb_before": 9.9
+    },
+    {
+      "ok": true,
+      "seconds": 93.1,
+      "model_field": "qwen2.5:7b",
+      "verified": 7,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [
+        0.841,
+        0.908,
+        0.854,
+        0.832,
+        0.864,
+        0.856,
+        0.906
+      ],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 0,
+      "mem_available_gb_before": 9.9
+    },
+    {
+      "ok": true,
+      "seconds": 82.9,
+      "model_field": "qwen2.5:7b",
+      "verified": 7,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 1,
+      "support_scores": [
+        0.817,
+        0.818,
+        0.841,
+        0.862,
+        0.822,
+        0.631,
+        0.682
+      ],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 1,
+      "mem_available_gb_before": 6.1
+    },
+    {
+      "ok": true,
+      "seconds": 79.1,
+      "model_field": "qwen2.5:7b",
+      "verified": 7,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 1,
+      "support_scores": [
+        0.817,
+        0.818,
+        0.841,
+        0.862,
+        0.822,
+        0.631,
+        0.682
+      ],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 2,
+      "mem_available_gb_before": 6.9
+    }
+  ],
+  "digest_note": "damga düzeltmesi 2026-07-29: model_digest() startswith hatası q8_0 satırını yakalamıştı; koşular doğru modelle yapıldı (her koşuda rapor model alanı 'qwen2.5:7b' doğrulandı)"
+}

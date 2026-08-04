@@ -1,0 +1,222 @@
+{
+  "sprint": "S5 update_plan_3 — kabul matrisi",
+  "timestamp": "2026-07-29 13:24",
+  "configs": {
+    "eski": {
+      "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2",
+      "SIMILARITY_THRESHOLD": "0.30"
+    },
+    "yeni": {}
+  },
+  "llm": "qwen2.5:7b (varsayılan)",
+  "results": [
+    {
+      "ok": true,
+      "seconds": 93.1,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 8,
+      "verified": 4,
+      "rejected": 4,
+      "reject_reasons": [
+        "unverified_entity",
+        "unverified_entity",
+        "unverified_entity",
+        "unverified_entity"
+      ],
+      "rejected_texts": [
+        "Apache2 in Ubuntu 24.04 supports mod_md configurations via a local tailscale daemon and uses pcre2 f",
+        "GCC in Ubuntu 24.04 is updated to version 14, providing enhanced security-hardening features such as",
+        "PHP in Ubuntu 24.04 has been updated to version 8.1, with improvements such as command line linter s",
+        "The upgrade from Ubuntu 22.04 to 24.04 includes significant changes, such as the removal of pptpd an"
+      ],
+      "flags": 4,
+      "flag_terms": [
+        "apparmor",
+        "containers",
+        "promptly",
+        "runc"
+      ],
+      "support_scores": [
+        0.768,
+        0.859,
+        0.954,
+        0.362
+      ],
+      "affected_packages": [
+        "docker.io",
+        "openssh-server"
+      ],
+      "config": "eski",
+      "scenario": "m8_2204_2404_real"
+    },
+    {
+      "ok": true,
+      "seconds": 50.5,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 6,
+      "verified": 6,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.408,
+        0.792,
+        0.697,
+        0.637,
+        0.58,
+        0.756
+      ],
+      "affected_packages": [],
+      "config": "eski",
+      "scenario": "m8_2004_2204_server"
+    },
+    {
+      "ok": true,
+      "seconds": 76.3,
+      "config_seen": {
+        "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+        "threshold": 0.3,
+        "collection": "ubuntu_minilm"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 8,
+      "verified": 8,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.776,
+        0.787,
+        0.768,
+        0.779,
+        0.858,
+        0.837,
+        0.843,
+        0.911
+      ],
+      "affected_packages": [
+        "chrony",
+        "corosync",
+        "php",
+        "python",
+        "samba"
+      ],
+      "config": "eski",
+      "scenario": "m8_1804_2004_legacy"
+    },
+    {
+      "ok": true,
+      "seconds": 70.2,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 8,
+      "verified": 8,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 1,
+      "flag_terms": [
+        "scripts"
+      ],
+      "support_scores": [
+        0.85,
+        0.892,
+        0.823,
+        0.769,
+        0.884,
+        0.851,
+        0.886,
+        0.906
+      ],
+      "affected_packages": [
+        "apache2",
+        "docker.io",
+        "gcc",
+        "google-chrome-stable"
+      ],
+      "config": "yeni",
+      "scenario": "m8_2204_2404_real"
+    },
+    {
+      "ok": true,
+      "seconds": 52.9,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 6,
+      "verified": 6,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.754,
+        0.895,
+        0.912,
+        0.839,
+        0.758,
+        0.673
+      ],
+      "affected_packages": [],
+      "config": "yeni",
+      "scenario": "m8_2004_2204_server"
+    },
+    {
+      "ok": true,
+      "seconds": 73.3,
+      "config_seen": {
+        "embedding": "BAAI/bge-small-en-v1.5",
+        "threshold": 0.6,
+        "collection": "ubuntu_bge"
+      },
+      "model_field": "qwen2.5:7b",
+      "draft": 7,
+      "verified": 7,
+      "rejected": 0,
+      "reject_reasons": [],
+      "rejected_texts": [],
+      "flags": 0,
+      "flag_terms": [],
+      "support_scores": [
+        0.841,
+        0.908,
+        0.854,
+        0.832,
+        0.864,
+        0.856,
+        0.906
+      ],
+      "affected_packages": [
+        "chrony",
+        "corosync",
+        "php",
+        "python",
+        "samba"
+      ],
+      "config": "yeni",
+      "scenario": "m8_1804_2004_legacy"
+    }
+  ]
+}

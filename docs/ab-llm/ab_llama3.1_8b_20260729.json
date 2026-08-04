@@ -1,0 +1,223 @@
+{
+  "sprint": "S4 update_plan_3 (canlı sistem A/B)",
+  "timestamp": "2026-07-29 12:49",
+  "model": "llama3.1:8b",
+  "digest": "46e0c10c039e",
+  "config": {
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "similarity_threshold": 0.6,
+    "lexical": "S3 sonrası (-ing toleransı dahil)",
+    "hardware": "RTX 3050 Laptop 4GB VRAM / 15GB RAM"
+  },
+  "repeats": 3,
+  "runs_ok": 9,
+  "runs_fail": 0,
+  "total_draft_claims": 68,
+  "total_verified": 62,
+  "grounding_pass_rate": 0.912,
+  "verified_per_minute": 2.5,
+  "avg_seconds_per_run": 165.2,
+  "reject_reason_hist": {
+    "fabricated_term": 6
+  },
+  "runs": [
+    {
+      "ok": true,
+      "seconds": 122.2,
+      "model_field": "llama3.1:8b",
+      "verified": 9,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 1,
+      "support_scores": [
+        0.834,
+        0.862,
+        0.817,
+        0.911,
+        0.783,
+        0.809,
+        0.852,
+        0.905,
+        0.64
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 0,
+      "mem_available_gb_before": 7.7
+    },
+    {
+      "ok": true,
+      "seconds": 95.5,
+      "model_field": "llama3.1:8b",
+      "verified": 9,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 2,
+      "support_scores": [
+        0.834,
+        0.862,
+        0.817,
+        0.911,
+        0.783,
+        0.86,
+        0.931,
+        0.842,
+        0.822
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 1,
+      "mem_available_gb_before": 7.5
+    },
+    {
+      "ok": true,
+      "seconds": 110.9,
+      "model_field": "llama3.1:8b",
+      "verified": 9,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 2,
+      "support_scores": [
+        0.834,
+        0.862,
+        0.817,
+        0.911,
+        0.783,
+        0.86,
+        0.931,
+        0.842,
+        0.822
+      ],
+      "scenario": "s1_2204_2404_real",
+      "repeat": 2,
+      "mem_available_gb_before": 7.8
+    },
+    {
+      "ok": true,
+      "seconds": 110.6,
+      "model_field": "llama3.1:8b",
+      "verified": 8,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 0,
+      "support_scores": [
+        0.84,
+        0.644,
+        0.881,
+        0.774,
+        0.846,
+        0.848,
+        0.656,
+        0.801
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 0,
+      "mem_available_gb_before": 7.7
+    },
+    {
+      "ok": true,
+      "seconds": 86.4,
+      "model_field": "llama3.1:8b",
+      "verified": 6,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 0,
+      "support_scores": [
+        0.84,
+        0.754,
+        0.88,
+        0.774,
+        0.694,
+        0.688
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 1,
+      "mem_available_gb_before": 7.7
+    },
+    {
+      "ok": true,
+      "seconds": 92.3,
+      "model_field": "llama3.1:8b",
+      "verified": 6,
+      "rejected": 1,
+      "reject_reasons": [
+        "fabricated_term"
+      ],
+      "flags": 0,
+      "support_scores": [
+        0.84,
+        0.754,
+        0.88,
+        0.774,
+        0.694,
+        0.688
+      ],
+      "scenario": "s2_2004_2204_server",
+      "repeat": 2,
+      "mem_available_gb_before": 7.6
+    },
+    {
+      "ok": true,
+      "seconds": 222.3,
+      "model_field": "llama3.1:8b",
+      "verified": 15,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [
+        0.803,
+        0.813,
+        0.829,
+        0.818,
+        0.946,
+        0.854,
+        0.799,
+        0.931,
+        0.856,
+        0.856,
+        0.857,
+        0.773,
+        0.677,
+        0.742,
+        0.971
+      ],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 0,
+      "mem_available_gb_before": 7.5
+    },
+    {
+      "ok": true,
+      "seconds": 352.3,
+      "model_field": "llama3.1:8b",
+      "verified": 0,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 1,
+      "mem_available_gb_before": 7.2
+    },
+    {
+      "ok": true,
+      "seconds": 294.1,
+      "model_field": "llama3.1:8b",
+      "verified": 0,
+      "rejected": 0,
+      "reject_reasons": [],
+      "flags": 0,
+      "support_scores": [],
+      "scenario": "s3_1804_2004_legacy",
+      "repeat": 2,
+      "mem_available_gb_before": 7.2
+    }
+  ]
+}

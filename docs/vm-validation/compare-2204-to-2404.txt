@@ -1,0 +1,12 @@
+Bacak: 22.04 → 24.04
+Envanter: önce 28 / sonra 28 paket
+
+Model tahmini (kanıtlı): —
+
+Gerçekte kaybolan (0): []
+
+İsabet (TP): —
+Yanlış alarm (FP — tahmin edildi ama klonda duruyor, dpkg -l ile çapraz kontrol et): —
+Kaçan (FN — beklenen: release notes yazmadıysa model göremez): 0 paket
+
+precision = tanımsız (model hiç tahmin üretmedi)

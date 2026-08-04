@@ -1,0 +1,153 @@
+{
+  "host": null,
+  "current_version": "20.04",
+  "target_version": "22.04",
+  "summary": "The upgrade from Ubuntu 20.04 to 22.04 will introduce several changes and potential issues, particularly for the Docker package due to the switch to nftables as the default firewall backend.",
+  "claims": [
+    {
+      "text": "Docker may not be fully compatible with the new nftables firewall backend introduced in Ubuntu 22.04, which could lead to configuration or functionality issues during the upgrade process.",
+      "chunk_ids": [
+        "22.04_security-improvements_0"
+      ],
+      "category": "known_issue",
+      "affected_package": "docker",
+      "support_score": 0.642,
+      "sources": [
+        {
+          "chunk_id": "22.04_security-improvements_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The upgrade from Ubuntu 20.04 to 22.04 is supported for both desktop and server systems, but users should ensure network connectivity to an official mirror or a locally accessible mirror.",
+      "chunk_ids": [
+        "22.04_upgrading-from-ubuntu-21-10_1"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.615,
+      "sources": [
+        {
+          "chunk_id": "22.04_upgrading-from-ubuntu-21-10_1",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Ubuntu 22.04 LTS will provide maintenance updates for 5 years until April 2027, with additional security support available through ESM.",
+      "chunk_ids": [
+        "22.04_support-lifespan_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.819,
+      "sources": [
+        {
+          "chunk_id": "22.04_support-lifespan_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The upgrade process from Ubuntu 21.10 to 22.04 LTS can be initiated using the command `update-manager -c` on desktop systems or `sudo do-release-upgrade` on server systems.",
+      "chunk_ids": [
+        "22.04_upgrading-from-ubuntu-21-10_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.795,
+      "sources": [
+        {
+          "chunk_id": "22.04_upgrading-from-ubuntu-21-10_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The upgrade from Ubuntu 20.04 to 22.04 includes significant toolchain upgrades, such as GCC 11.2.0 and Python 3.10.4.",
+      "chunk_ids": [
+        "22.04_toolchain-upgrades_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.547,
+      "sources": [
+        {
+          "chunk_id": "22.04_toolchain-upgrades_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Known issues with the upgrade include some significant bugs that users may encounter, as documented in the release notes for Ubuntu 22.04 LTS.",
+      "chunk_ids": [
+        "22.04_known-issues_0"
+      ],
+      "category": "known_issue",
+      "affected_package": null,
+      "support_score": 0.647,
+      "sources": [
+        {
+          "chunk_id": "22.04_known-issues_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The upgrade process will automatically re-attach to GNU screen in case of a dropped connection, ensuring the upgrade can be resumed without manual intervention.",
+      "chunk_ids": [
+        "22.04_upgrading-from-ubuntu-21-10_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.447,
+      "sources": [
+        {
+          "chunk_id": "22.04_upgrading-from-ubuntu-21-10_0",
+          "url": "https://documentation.ubuntu.com/release-notes/22.04/",
+          "scraped_at": "2026-07-06T10:26:42.906102"
+        }
+      ],
+      "flags": []
+    }
+  ],
+  "not_found_notes": [],
+  "rejected_claims": [],
+  "package_candidates": [
+    "docker"
+  ],
+  "affected_packages": [
+    "docker"
+  ],
+  "freshness": {
+    "20.04": {
+      "scraped_at": "2026-07-06T13:41:33.275100",
+      "stale_fallback": false
+    },
+    "22.04": {
+      "scraped_at": "2026-07-06T10:26:42.906102",
+      "stale_fallback": false
+    }
+  },
+  "warnings": [],
+  "stats": {
+    "draft_claims": 7,
+    "verified": 7,
+    "rejected": 0,
+    "flagged": 0
+  },
+  "duration_s": 61.6
+}
