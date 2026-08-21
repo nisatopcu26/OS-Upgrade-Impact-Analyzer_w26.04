@@ -1,0 +1,233 @@
+# Changelog
+
+Bu dosya, projenin ana rapor(lar)ında ("her anlamlı adımı tarih-saatiyle
+docs/CHANGELOG.md'ye işledim") atıfta bulunulan kayıt defteridir. Dosya
+2026-08-21 tarihine kadar fiilen tutulmamış — geriye dönük olarak, çalışma
+günlüğü (session_log.md) ve bu tarihten sonraki oturumlar birleştirilerek
+oluşturulmuştur. Her giriş: ne yapıldı, neden yapıldı, kanıtı ne, kod
+değişti mi.
+
+---
+
+## 2026-08-14 – 2026-08-18 — Ubuntu 26.04 LTS Desteği Eklendi
+
+**Ne yapıldı:**
+
+**Test ortamı kuruldu:** UTM (QEMU, ARM64) ile 3 ayrı Ubuntu VM'i
+(26.04, 24.04, 22.04), her birine Mac'ten anahtar tabanlı SSH erişimi
+sağlandı (projenin agentless mimarisine uygun). Kurulum sırasında yanlış
+mimarili ISO, boot döngüsü ve klavye düzeni sorunları çözüldü.
+
+**26.04 desteği eklendi:** `config/versions.json`'a ilk kayıt (`sphinx`
+formatı) eklendi.
+
+**5 gerçek hata bulundu ve düzeltildi:**
+
+| # | Bulgu | Çözüm |
+|---|-------|-------|
+| 1 | `build_index()` hiçbir yerde otomatik tetiklenmiyordu — yeni sürüm eklense bile chunk üretilmiyordu (LLM 0 kaynakla uyduruyordu). | `node_refresh`'e otomatik kontrol eklendi: chunk yoksa kendiliğinden indeksler. |
+| 2 | 26.04'ün asıl release notes içeriği ayrı bir sayfaya (`summary-for-lts-users/`) taşınmıştı; scraper görmüyordu (yalnız 5 chunk). | `extra_urls` desteği eklendi. Chunk sayısı 5→126. |
+| 3 | Chunk kimliğinin `p1-` öneki modelin atıf başarısını düşürüyordu. | Önek → `-src1` soneğine çevrildi. Kaynak sadakati %71→%88 (9 tekrar). |
+| 4 | `.env` hiç okunmuyordu (`load_dotenv()` çağrısı yoktu). | `src/api/main.py` başına eklendi. |
+| 5 | Rapordaki `"model"` alanı her zaman global `LLM_MODEL`'i gösteriyordu, senaryo-bazlı seçim olsa bile. | `AgentState`'e `used_model` eklendi. |
+
+**Metodoloji (ölçülmeden karar verilmedi):**
+1. Prompt'a "detay uydurma" yasağı → test edildi (3 tekrar): %75→%71 → **geri alındı**.
+2. `section_id` önek→sonek → 9 tekrar: %71→%88 → **tutuldu**.
+3. qwen2.5:7b vs llama3.1:8b karşılaştırması (9'ar tekrar): llama3.1
+   24.04→26.04'te daha iyi, ama 22.04→24.04'te chunk_id önekini
+   tutarsız kopyaladığı görüldü.
+4. Kök neden (Bulgu #5) bulundu, düzeltildi.
+5. **Senaryo-bazlı model seçimi** (`MODEL_OVERRIDES`) eklendi: 24.04→26.04
+   için llama3.1:8b, diğerleri için qwen2.5:7b → zincir testiyle doğrulandı.
+
+**Model performansı (düzeltme sonrası):**
+- 22.04→24.04: qwen2.5:7b, 8/8, ~34s
+- 24.04→26.04: llama3.1:8b, 11/11 (%100, 9 tekrarda tutarlı), ~30-32s
+- Tam zincir 22.04→24.04: 7/7 (%100); tam zincir 24.04→26.04: 11/11 (%100)
+- Not: qwen kaynakta olmayan terim/versiyon uyduruyor, llama3.1 zaman
+  zaman chunk kimliğinin sürüm önekini atlıyor — model aileleri farklı
+  tarzda başarısız oluyor.
+
+**Test tabanı doğrulaması:** 112 testlik pytest seti macOS'ta (102 passed,
+3 failed — host bekleyen testler, doğal) ve gerçek Ubuntu VM'inde (105
+passed, 0 failed) ayrı ayrı koşuldu; başarısızlıkların ortam farkından
+kaynaklandığı kanıtlandı.
+
+**Neden yapıldı:** Ubuntu 26.04 LTS resmi yayınlandığı için projeye destek
+eklenmesi ve gerçek ortamda uçtan uca doğrulanması gerekiyordu.
+
+**Kanıt:** `session_log.md` (14-18 Ağustos 2026 çalışma günlüğü).
+
+**Kod değişti mi:** Evet.
+- `config/versions.json` — 26.04 kaydı + `extra_urls`
+- `src/agent/nodes.py` — `node_refresh` otomatik indeksleme, `MODEL_OVERRIDES`, `used_model`
+- `src/agent/graph.py` — `AgentState`'e `used_model` alanı
+- `src/agent/grounding.py` — rapor `"model"` alanı `used_model`'den okunuyor
+- `src/scraper/base_scraper.py` — `save_raw_html`'e `suffix` parametresi
+- `src/scraper/ubuntu_scraper.py` — çoklu URL desteği, `section_id` sonek çözümü
+- `src/api/main.py` — `load_dotenv()` eklendi
+- `.env` — `LLM_MODEL=llama3.1:8b` denemesi, sonra `MODEL_OVERRIDES`'a taşındı
+
+**Açık kalan konular (bu turda ele alınmadı):**
+- `MODEL_OVERRIDES` şu an sadece 24.04→26.04 için tanımlı.
+- llama3.1'in chunk_id önek atlama eğilimi daha büyük örneklemle araştırılmadı.
+- 18.04→20.04 zinciri (eski wiki formatı) test edilmedi.
+- Golden set + bootstrap CI metodolojisinin 26.04'e uyarlanması planlandı
+  (sonraki oturumda ele alındı — bkz. 2026-08-21).
+
+---
+
+## 2026-08-21 — Ubuntu 26.04 Golden Set Doğrulaması + Grounding Kalibrasyonu
+
+**Ne yapıldı:**
+1. 26.04'ün 126 chunk'ı üzerinde, ana rapordaki 50-soruluk golden-set
+   metodolojisiyle (Bölüm 13.1) birebir aynı disiplinde bir doğrulama seti
+   kuruldu: 50 anchor (22 lexical / 28 semantic — ana setle aynı oran),
+   kaynaktan birebir alınmış, her biri kendi chunk'ında benzersizliği
+   doğrulanmış. (Bir önceki turun "sonraki adımlar" listesindeki açık
+   maddenin karşılığı.)
+2. Retrieval kalitesi ölçüldü: recall@1=0.960, recall@5=0.980, MRR=0.970
+   (1000 tekrarlı bootstrap, %95 CI). Tek top-5-dışı kayıp (Linux kernel
+   sorgusu) analiz edildi; 5 ek çok-parçalı bölüm probu ile bu önyargının
+   izole bir vaka olduğu (sistematik olmadığı) doğrulandı.
+3. Grounding katmanı, 26.04 hedefiyle sahte bir envanterle (M8 yöntemi)
+   `analyze()` zincirinden uçtan uca geçirildi: 16 taslak iddia, 14
+   doğrulandı, 1 FLAG, 2 RED. İki RED elle denetlendi (PDF'teki 35 RED /
+   10 PASS denetim disiplinine sadık):
+   - Postfix (unknown_chunk_id): model var olmayan bir chunk_id'ye
+     (`26.04_postfix-src1_1`) atıf yaptı; içerik doğruydu, kimlik
+     uydurulmuştu. Doğru RED — önceki turda bulunan "llama3.1 chunk
+     kimliğini tutarsız kopyalıyor" bulgusuna yeni bir varyant.
+   - RabbitMQ (fabricated_term: 'mitigation'): kaynak 'mitigate' (fiil),
+     iddia 'mitigation' (isim) dedi. İçerik sadıktı ama sistem uydurma
+     saydı. Yanlış-RED — kök nedeni aşağıda.
+
+**Neden yapıldı:** 26.04 desteğinin, projenin kendi ölçüm disipliniyle
+(mekanik ground truth, bootstrap CI, elle RED denetimi) doğrulanması
+gerekiyordu; önceki turda yalnız chunk sayısının artması (5→126) ve
+tekil senaryo ölçümleri (7/8, 11/11) vardı, sistematik bir golden-set
+ölçümü henüz yapılmamıştı.
+
+**Kanıt:** `data/eval/golden_set_26_04.json`, `data/eval/eval_results_26_04.json`,
+`data/eval/grounding_report_26_04.json`, `data/eval/multi_chunk_probe.json`.
+
+**Kod değişti mi:** Hayır (bu adımda) — yalnız ölçüm/doğrulama.
+
+---
+
+## 2026-08-21 — Kalibrasyon: -ate Fiil → -ion/-ation İsim Türetmesi
+
+**Ne yapıldı:** RabbitMQ vakasının kök nedeni izole edildi: `_morph_variants()`
+yalnız ÇEKİM tolere ediyor (çoğul, -ing, daemon-d); TÜRETME (fiilden isim
+yapma, -ion/-ation eki) kapsam dışı. 5 çift test edildi (mitigate→mitigation,
+optimize→optimization, authenticate→authentication, automate→automation,
+generate→generation) — hiçbiri morph motoru tarafından yakalanmıyordu.
+Bunlardan deprecation/configuration/integration/migration/isolation zaten
+COMMON_WORDS'te olduğu için etkilenmemişti (tesadüfi kapsama, sistematik
+değil).
+
+Proje disiplinine (test-önce) sadık kalınarak düzeltildi:
+1. Önce mitigation vakasını yakalayan adversarial test yazıldı
+   (`test_ion_ation_derivation_not_flagged`) — beklendiği gibi KIRMIZI
+   çıktı (0 verified, fabricated_term RED'i).
+2. 5 kelime (mitigation, optimization, authentication, automation,
+   generation) `COMMON_WORDS`'e dar ekleme olarak eklendi — önceki turdaki
+   "made + compiler" kalibrasyonuyla aynı desen.
+3. Test yeniden koşuldu: YEŞİL.
+
+**Neden yapıldı:** Sadık bir iddia (RabbitMQ/mitigation) haksız yere
+reddediliyordu; kaynağın söylediğini paraphrase eden meşru bir iddia,
+morfoloji katmanının bilinçli sınırının (çekim ≠ türetme) dışında kaldığı
+için "uydurma" sayılıyordu.
+
+**Kanıt:**
+- Regresyon: `tests/test_grounding.py` 29/29 yeşil (28 mevcut + 1 yeni).
+- Platform doğrulaması: macOS'ta VE gerçek Ubuntu 24.04 VM'inde
+  (nisa4@192.168.64.3) ayrı ayrı çalıştırıldı, ikisinde de 29/29.
+- Proje geneli: `pytest -q` → 103 passed, 3 failed (macOS'a özgü
+  host-testleri, önceki turdaki 102/3/7 referansıyla tutarlı), 7 skipped.
+  Regresyon yok.
+
+**Kod değişti mi:** Evet.
+- `src/agent/_common_words.py`: 5 kelime eklendi (dar ekleme).
+- `tests/test_grounding.py`: `test_ion_ation_derivation_not_flagged` eklendi.
+
+---
+
+## 2026-08-21 — Ana Rapora (OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor.docx) İki Yeni Bölüm Eklendi
+
+**Ne yapıldı:** Docx formatındaki 26.04 raporu iki ayrı düzenleme turunda
+güncellendi (mevcut stil/tablo formatına birebir uyularak, "Sonraki Adımlar"
+başlığından hemen önce eklendi):
+
+1. **"26.04 Golden Set Doğrulaması (Retrieval Kalitesi)"** — 50 soruluk
+   golden-set metriklerini (recall@1/@5, MRR, %95 CI — genel/lexical/semantic
+   kırılımıyla), Linux kernel top-5-kaybı vakasının kök neden analizini, ve
+   5 parçalı çok-chunk probunun sonucunu (izole vaka, sistematik değil)
+   içeren tablo + metin bölümü.
+2. **"Grounding Testi: 26.04 Üzerinde Uçtan Uca"** + **"Kalibrasyon: -ate
+   Fiil → -ion/-ation İsim Türetmesi"** — sahte envanterle çalıştırılan
+   `analyze()` zincirinin sonuçları (16 taslak / 14 doğrulanan / 1 FLAG /
+   2 RED), iki RED'in elle denetimi (Postfix=doğru RED, RabbitMQ=yanlış-RED),
+   ve `mitigation` kalibrasyon düzeltmesinin tam anlatısı (test-önce →
+   düzeltme → regresyon doğrulaması).
+
+Her iki tur da doğrudan `word/document.xml` düzenlemesiyle yapıldı
+(`unzip → merge_runs → XML düzenle → zip` iş akışı); XSD doğrulaması
+(`validate.py`) ve görsel render kontrolü (`soffice --convert-to pdf` +
+`pdftoppm`) her turda koşuldu.
+
+**Neden yapıldı:** Bu oturumdaki ölçüm/test bulgularının (golden set,
+grounding, kalibrasyon) kalıcı, paylaşılabilir bir kayda dönüşmesi için —
+sözlü/chat-içi bulgular olarak kalmayıp raporun kendisinin bir parçası
+olması.
+
+**Kanıt:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v2.docx` (ilk tur),
+`..._v3.docx` (ikinci tur) — ikisi de XSD doğrulamasından geçti
+("All validations PASSED"), paragraf sayısı artışı izlenebilir
+(76→106→126).
+
+**Kod değişti mi:** Hayır — yalnız rapor dosyası (docx) güncellendi.
+
+---
+
+## 2026-08-21 — GitHub'a Aktarım (Kendi Fork)
+
+**Ne yapıldı:** Proje `origin`'inin (`3RAV0/OS-Upgrade-Impact-Analyzer`)
+başkasına ait olduğu fark edildi — oraya doğrudan push yapılmadı. Bunun
+yerine kendi GitHub hesabında bir fork oluşturuldu
+(`nisatopcu26/OS-Upgrade-Impact-Analyzer_w26.04`), yerel `origin` remote'u
+buna yönlendirildi, tüm 2026-08-21 değişiklikleri (`_common_words.py`,
+`tests/test_grounding.py`, ve öncesindeki commit edilmemiş 26.04 çalışması)
+tek bir commit'te push edildi.
+
+**Neden yapıldı:** Değişikliklerin kalıcı ve paylaşılabilir olması
+gerekiyordu, ama orijinal repo sahibinin izni/yazma yetkisi olmadan
+`3RAV0`'ın reposuna push yapmak uygun olmazdı.
+
+**Kanıt:** `git push origin main` çıktısı — `8473ee9..d15bf1b main -> main`,
+`https://github.com/nisatopcu26/OS-Upgrade-Impact-Analyzer_w26.04`.
+
+**Kod değişti mi:** Hayır — yalnız remote/versiyon kontrolü işlemi.
+
+---
+
+## 2026-08-21 — CHANGELOG.md Oluşturuldu ve Konsolide Edildi
+
+**Ne yapıldı:** Bu dosya oluşturuldu. Ana raporda "docs/CHANGELOG.md'ye
+işledim" denmesine rağmen dosyanın fiilen hiç var olmadığı tespit edildi
+(`git log --all -- docs/CHANGELOG.md` boş döndü, upstream repoda da yok).
+İlk sürümü yalnız 2026-08-21 çalışmalarını kapsıyordu; ardından
+14-18 Ağustos 2026 tarihli çalışma günlüğü (`session_log.md` — 26.04
+desteğinin ilk eklenmesi, 5 hata düzeltmesi, model karşılaştırması,
+test doğrulaması) geriye dönük olarak bu dosyaya işlenip tek, kronolojik
+bir kayda konsolide edildi.
+
+**Neden yapıldı:** Projenin kendi belgelediği disiplinin (tarih-saatli,
+gerekçeli kayıt tutma) hem geçmiş hem gelecek çalışmalar için fiilen
+uygulanabilir, tek bir kaynaktan okunabilir olması için.
+
+**Kanıt:** Bu dosyanın kendisi; `session_log.md` (konsolidasyonun kaynağı).
+
+**Kod değişti mi:** Hayır — yalnız dokümantasyon.
