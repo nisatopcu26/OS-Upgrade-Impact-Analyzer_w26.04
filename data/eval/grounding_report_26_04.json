@@ -1,0 +1,325 @@
+{
+  "host": null,
+  "current_version": "24.04",
+  "target_version": "26.04",
+  "model": "llama3.1:8b",
+  "summary": "Upgrading from Ubuntu 24.04 to 26.04 may require manual steps for RabbitMQ and Postfix, while PostgreSQL has been updated to version 18 with improved performance.",
+  "claims": [
+    {
+      "text": "PostgreSQL was updated to version 18 in Ubuntu 26.04.",
+      "chunk_ids": [
+        "26.04_postgresql-src1_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.918,
+      "sources": [
+        {
+          "chunk_id": "26.04_postgresql-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The new PostgreSQL version improves performance for workloads of all sizes through a new I/O subsystem that has demonstrated up to 3× performance improvements when reading from storage.",
+      "chunk_ids": [
+        "26.04_postgresql-src1_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.852,
+      "sources": [
+        {
+          "chunk_id": "26.04_postgresql-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "PostgreSQL 18 makes major-version upgrades less disruptive, accelerating upgrade times and reducing the time required to reach expected performance after an upgrade completes.",
+      "chunk_ids": [
+        "26.04_postgresql-src1_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.854,
+      "sources": [
+        {
+          "chunk_id": "26.04_postgresql-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "RabbitMQ is not directly upgradable due to feature flags, requiring manual steps for mitigation.",
+      "chunk_ids": [
+        "26.04_rabbitmq-src1_0"
+      ],
+      "category": "known_issue",
+      "affected_package": "rabbitmq",
+      "support_score": 0.9,
+      "sources": [
+        {
+          "chunk_id": "26.04_rabbitmq-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The samba-vfs-modules package is now just a transitional package, and it can be safely removed after the release upgrade.",
+      "chunk_ids": [
+        "26.04_samba-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "samba",
+      "support_score": 0.722,
+      "sources": [
+        {
+          "chunk_id": "26.04_samba-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": [
+        {
+          "term": "transitional",
+          "reason": "term_not_in_cited_source"
+        }
+      ]
+    },
+    {
+      "text": "Samba has been updated to the new upstream 4.23 version in Ubuntu 26.04 LTS.",
+      "chunk_ids": [
+        "26.04_samba-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "samba",
+      "support_score": 0.795,
+      "sources": [
+        {
+          "chunk_id": "26.04_samba-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "HAProxy was updated to the latest upstream LTS release, 3.2, which introduces performance and efficiency improvements, faster and more reliable QUIC protocol support, and more.",
+      "chunk_ids": [
+        "26.04_haproxy-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "haproxy",
+      "support_score": 0.912,
+      "sources": [
+        {
+          "chunk_id": "26.04_haproxy-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Squid was updated to upstream version 7.2 in Ubuntu 26.04 LTS.",
+      "chunk_ids": [
+        "26.04_squid-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "squid",
+      "support_score": 0.835,
+      "sources": [
+        {
+          "chunk_id": "26.04_squid-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "SSSD has been updated to version 2.12, which now runs under user sssd instead of root.",
+      "chunk_ids": [
+        "26.04_sssd-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "sssd",
+      "support_score": 0.921,
+      "sources": [
+        {
+          "chunk_id": "26.04_sssd-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The systemd service manager has been updated from version 255 to 259 in Ubuntu 26.04 LTS.",
+      "chunk_ids": [
+        "26.04_systemd-259-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "systemd",
+      "support_score": 0.819,
+      "sources": [
+        {
+          "chunk_id": "26.04_systemd-259-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Ubuntu now comes with the upstream tmp.mount unit by default, making /tmp a tmpfs file system by default.",
+      "chunk_ids": [
+        "26.04_systemd-259-src1_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.786,
+      "sources": [
+        {
+          "chunk_id": "26.04_systemd-259-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "GCC has been updated from version 14 to 15.2 in Ubuntu 26.04 LTS.",
+      "chunk_ids": [
+        "26.04_development-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "gcc",
+      "support_score": 0.785,
+      "sources": [
+        {
+          "chunk_id": "26.04_development-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Chrony is now used as the default time daemon replacing systemd-timesyncd for new installations in Ubuntu 26.04 LTS.",
+      "chunk_ids": [
+        "26.04_chrony-src1_0"
+      ],
+      "category": "general",
+      "affected_package": null,
+      "support_score": 0.935,
+      "sources": [
+        {
+          "chunk_id": "26.04_chrony-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "ClamAV has been updated to version 1.4.3 with many new features, including scanning attachments found in Microsoft OneNote section files and extracting Universal Disk Format (UDF) partitions.",
+      "chunk_ids": [
+        "26.04_clamav-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "clamav",
+      "support_score": 0.868,
+      "sources": [
+        {
+          "chunk_id": "26.04_clamav-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "Django has been updated to the latest LTS release 5.2 from 4.2 in Ubuntu 25.10, which includes many new features and bug fixes.",
+      "chunk_ids": [
+        "26.04_django-src1_0"
+      ],
+      "category": "general",
+      "affected_package": "django",
+      "support_score": 0.949,
+      "sources": [
+        {
+          "chunk_id": "26.04_django-src1_0",
+          "url": "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+          "scraped_at": "2026-08-18T15:05:47.145640"
+        }
+      ],
+      "flags": []
+    }
+  ],
+  "not_found_notes": [
+    "A draft statement was removed because it lacked a verifiable source (unknown_chunk_id): \"Postfix is no longer installed in a chroot by default and only limited chroot support is available from now on.\""
+  ],
+  "rejected_claims": [
+    {
+      "text": "Postfix is no longer installed in a chroot by default and only limited chroot support is available from now on.",
+      "reject_reason": "unknown_chunk_id",
+      "missing_entities": [],
+      "support_score": null,
+      "chunk_ids": [
+        "26.04_postfix-src1_1"
+      ]
+    }
+  ],
+  "package_candidates": [
+    "php",
+    "postgresql",
+    "openssh-server",
+    "samba",
+    "haproxy",
+    "squid",
+    "sssd",
+    "systemd",
+    "python3",
+    "gcc",
+    "chrony",
+    "clamav",
+    "django"
+  ],
+  "affected_packages": [
+    "clamav",
+    "django",
+    "gcc",
+    "haproxy",
+    "samba",
+    "squid",
+    "sssd",
+    "systemd"
+  ],
+  "freshness": {
+    "24.04": {
+      "scraped_at": "2026-08-17T09:39:26.639509",
+      "stale_fallback": false
+    },
+    "26.04": {
+      "scraped_at": "2026-08-18T15:05:47.145640",
+      "stale_fallback": false
+    }
+  },
+  "warnings": [],
+  "stats": {
+    "draft_claims": 16,
+    "verified": 15,
+    "rejected": 1,
+    "flagged": 1
+  }
+}

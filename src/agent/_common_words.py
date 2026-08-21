@@ -256,12 +256,12 @@ lines list listed lists little load loaded local locally location login long
 longer look lower machine machines mail main mainly maintain maintained major
 make makes making manage managed management manager manages manual manually
 many mechanism meaning means media memory menu message messages method methods
-might migrate migrated migration minimal minor mirror missing mode modes month
+might migrate migrated migration mitigate mitigated mitigation minimal minor mirror missing mode modes month
 months more most mostly mount mounted move moved much multiple must name named
 names nearly need needed needs never newer newly next none normal normally
 note noted notes nothing notice notify notified number numbers offer offered
 offers officially often older only onto open opened operating operation
-operations option optional optionally options order other others otherwise
+operations optimization authentication automation generation option optional optionally options order other others otherwise
 output over overall overview package packages page pages part partial parts
 password path paths perform performance performed performs place placed
 platform platforms please point pointed points policy poor popular port ports

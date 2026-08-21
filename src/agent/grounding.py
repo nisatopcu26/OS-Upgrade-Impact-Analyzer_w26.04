@@ -375,7 +375,7 @@ def node_grounding(state: dict) -> dict:
         "target_version": state["target_version"],
         # S4 (açık karar #4): raporu üreten LLM beyanı — A/B koşuları ve
         # denetim izleri kendiliğinden etiketli olur.
-        "model": LLM_MODEL,
+        "model": state.get("used_model", LLM_MODEL),
         "summary": state.get("draft_summary", ""),
         "claims": verified,
         "not_found_notes": not_found,

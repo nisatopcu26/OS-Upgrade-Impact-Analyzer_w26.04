@@ -1,0 +1,22 @@
+[
+  {
+    "chunk_id": "26.04_virtualization-stack-src1_1",
+    "question": "What new virtualization stack does Ubuntu 26.04 LTS introduce?"
+  },
+  {
+    "chunk_id": "26.04_support-for-new-intel-integrated-and-discrete-gpus-src1_0",
+    "question": "Which Intel GPU families does Ubuntu 26.04 fully support?"
+  },
+  {
+    "chunk_id": "26.04_the-dpc-compiler-and-related-packages-are-now-available-src1_0",
+    "question": "What new compiler for building SYCL code is now available in Ubuntu 26.04?"
+  },
+  {
+    "chunk_id": "26.04_history-management-in-apt-src1_0",
+    "question": "What new APT interface was added for viewing command history?"
+  },
+  {
+    "chunk_id": "26.04_the-amd-rocm-libraries-are-now-available-src1_0",
+    "question": "What AMD ROCm software version is now available in Ubuntu 26.04's Universe repository?"
+  }
+]

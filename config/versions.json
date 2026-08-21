@@ -15,6 +15,14 @@
     "24.04": {
       "url": "https://documentation.ubuntu.com/release-notes/24.04/",
       "format": "sphinx"
+    },
+    "26.04": {
+      "url": "https://documentation.ubuntu.com/release-notes/26.04/",
+      "format": "sphinx",
+      "extra_urls": [
+        "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/"
+      ]
     }
+
   }
 }

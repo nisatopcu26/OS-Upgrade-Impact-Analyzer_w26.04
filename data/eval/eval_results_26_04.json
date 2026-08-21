@@ -1,0 +1,402 @@
+[
+  {
+    "question": "What version was LibreOffice updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_updated-applications-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_updated-applications-src1_0",
+    "top1_similarity": 0.7986
+  },
+  {
+    "question": "What OpenSSH version does Ubuntu 26.04 ship, upgrading from 24.04's version?",
+    "class": "lexical",
+    "target": "26.04_openssh-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_openssh-src1_0",
+    "top1_similarity": 0.7574
+  },
+  {
+    "question": "What version was PHP updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_php-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_php-src1_0",
+    "top1_similarity": 0.7444
+  },
+  {
+    "question": "What version was PostgreSQL updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_postgresql-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_postgresql-src1_0",
+    "top1_similarity": 0.8636
+  },
+  {
+    "question": "What upstream Samba version does Ubuntu 26.04 ship?",
+    "class": "lexical",
+    "target": "26.04_samba-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_samba-src1_0",
+    "top1_similarity": 0.7673
+  },
+  {
+    "question": "What version was the systemd service manager updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_systemd-259-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_systemd-259-src1_0",
+    "top1_similarity": 0.8044
+  },
+  {
+    "question": "What version was Python updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_development-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_development-src1_0",
+    "top1_similarity": 0.6988
+  },
+  {
+    "question": "What MySQL version does Ubuntu 26.04 ship, and what is the starting point release?",
+    "class": "lexical",
+    "target": "26.04_mysql-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_mysql-src1_0",
+    "top1_similarity": 0.8068
+  },
+  {
+    "question": "What version was Dovecot updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_dovecot-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_dovecot-src1_0",
+    "top1_similarity": 0.8205
+  },
+  {
+    "question": "What HAProxy version does Ubuntu 26.04 ship?",
+    "class": "lexical",
+    "target": "26.04_haproxy-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_haproxy-src1_0",
+    "top1_similarity": 0.7055
+  },
+  {
+    "question": "What version was Squid updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_squid-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_squid-src1_0",
+    "top1_similarity": 0.7662
+  },
+  {
+    "question": "What version was SSSD updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_sssd-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_sssd-src1_0",
+    "top1_similarity": 0.7746
+  },
+  {
+    "question": "Why does the Ubuntu Desktop session in 26.04 run only on the Wayland back end?",
+    "class": "semantic",
+    "target": "26.04_wayland-session-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_wayland-session-src1_0",
+    "top1_similarity": 0.8406
+  },
+  {
+    "question": "How are the disk encryption keys handled with TPM-backed full-disk encryption in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_tpm-backed-full-disk-encryption-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_tpm-backed-full-disk-encryption-src1_0",
+    "top1_similarity": 0.8849
+  },
+  {
+    "question": "What is the default sudo provider in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_sudo-rs-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_sudo-rs-src1_0",
+    "top1_similarity": 0.8231
+  },
+  {
+    "question": "What now provides the core utilities of the operating system in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_rust-coreutils-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_rust-coreutils-src1_0",
+    "top1_similarity": 0.6887
+  },
+  {
+    "question": "What application now provides the default terminal emulator in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_new-terminal-emulator-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-terminal-emulator-src1_0",
+    "top1_similarity": 0.7667
+  },
+  {
+    "question": "What app replaces the System Monitor and Power Statistics apps in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_new-system-monitor-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-system-monitor-src1_0",
+    "top1_similarity": 0.8036
+  },
+  {
+    "question": "What is now used as Ubuntu's default initial ramdisk infrastructure, and what does it replace?",
+    "class": "semantic",
+    "target": "26.04_dracut-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_dracut-src1_0",
+    "top1_similarity": 0.7991
+  },
+  {
+    "question": "What ISA profile must RISC-V hardware implement to run Ubuntu 26.04 LTS?",
+    "class": "semantic",
+    "target": "26.04_new-risc-v-requirements-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-risc-v-requirements-src1_0",
+    "top1_similarity": 0.8811
+  },
+  {
+    "question": "What is the minimum IBM Z architectural level required by Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_ibm-z-requirements-raised-to-z15-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_ibm-z-requirements-raised-to-z15-src1_0",
+    "top1_similarity": 0.832
+  },
+  {
+    "question": "What GNOME scripts have been removed in Ubuntu 26.04, and as part of what cleanup?",
+    "class": "semantic",
+    "target": "26.04_prelogin-and-postsession-scripts-have-been-removed-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_prelogin-and-postsession-scripts-have-been-removed-src1_0",
+    "top1_similarity": 0.7918
+  },
+  {
+    "question": "What is now the default time daemon in Ubuntu 26.04, and what does it replace?",
+    "class": "semantic",
+    "target": "26.04_chrony-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_chrony-src1_0",
+    "top1_similarity": 0.8131
+  },
+  {
+    "question": "What Django version does Ubuntu 26.04 ship, and from which version was it updated?",
+    "class": "lexical",
+    "target": "26.04_django-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_django-src1_0",
+    "top1_similarity": 0.8034
+  },
+  {
+    "question": "What version was ClamAV updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_clamav-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_clamav-src1_0",
+    "top1_similarity": 0.7073
+  },
+  {
+    "question": "What version was the Netplan network manager updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_netplan-1-2-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_netplan-1-2-src1_0",
+    "top1_similarity": 0.8125
+  },
+  {
+    "question": "What version was APT updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_package-management-apt-3-src1_0",
+    "rank": 3,
+    "top1_id": "26.04_ubuntu-26-04-lts-summary-src1_0",
+    "top1_similarity": 0.7332
+  },
+  {
+    "question": "What Linux kernel version does Ubuntu 26.04 ship?",
+    "class": "lexical",
+    "target": "26.04_linux-kernel-7-0-src1_0",
+    "rank": 7,
+    "top1_id": "26.04_linux-kernel-7-0-src1_2",
+    "top1_similarity": 0.7456
+  },
+  {
+    "question": "What version was Valkey updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_valkey-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_valkey-src1_0",
+    "top1_similarity": 0.8121
+  },
+  {
+    "question": "What version was MySQL Shell updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_mysql-shell-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_mysql-shell-src1_0",
+    "top1_similarity": 0.8629
+  },
+  {
+    "question": "Which .NET version is now available in the Ubuntu 26.04 archive?",
+    "class": "lexical",
+    "target": "26.04_net-10-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_net-10-src1_0",
+    "top1_similarity": 0.8298
+  },
+  {
+    "question": "What version does DocumentDB start at in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_documentdb-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_documentdb-src1_0",
+    "top1_similarity": 0.8755
+  },
+  {
+    "question": "What version was the Tracker Miners/LocalSearch indexer updated to in Ubuntu 26.04?",
+    "class": "lexical",
+    "target": "26.04_tracker-miners-updated-to-localsearch-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_tracker-miners-updated-to-localsearch-src1_0",
+    "top1_similarity": 0.8488
+  },
+  {
+    "question": "What application now provides the Document Viewer for PDFs in Ubuntu 26.04, replacing Evince?",
+    "class": "semantic",
+    "target": "26.04_new-document-viewer-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-document-viewer-src1_0",
+    "top1_similarity": 0.8617
+  },
+  {
+    "question": "What application now provides the Image Viewer in Ubuntu 26.04, replacing Eye of GNOME?",
+    "class": "semantic",
+    "target": "26.04_new-image-viewer-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-image-viewer-src1_0",
+    "top1_similarity": 0.8372
+  },
+  {
+    "question": "Is the Software & Updates settings app included by default in Ubuntu 26.04 Desktop?",
+    "class": "semantic",
+    "target": "26.04_software-updates-app-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_software-updates-app-src1_0",
+    "top1_similarity": 0.8475
+  },
+  {
+    "question": "What new security-related feature is included in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_security-center-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_security-center-src1_0",
+    "top1_similarity": 0.7404
+  },
+  {
+    "question": "How has the Power Profiles Manager been improved in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_better-power-optimization-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_better-power-optimization-src1_0",
+    "top1_similarity": 0.8546
+  },
+  {
+    "question": "What new driver improves performance for Windows games running on Wine and Proton in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_performance-improvements-in-windows-games-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_performance-improvements-in-windows-games-src1_0",
+    "top1_similarity": 0.8645
+  },
+  {
+    "question": "What new type of ARM64 image is available in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_new-arm64-desktop-image-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-arm64-desktop-image-src1_0",
+    "top1_similarity": 0.7551
+  },
+  {
+    "question": "What API now provides hardware-accelerated video encoding/decoding by default for AMD and Intel users?",
+    "class": "semantic",
+    "target": "26.04_va-api-accelerated-video-encoding-and-decoding-by-default-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_va-api-accelerated-video-encoding-and-decoding-by-default-src1_0",
+    "top1_similarity": 0.8987
+  },
+  {
+    "question": "What post-quantum cryptography algorithms does the OpenSSL library in Ubuntu 26.04 support?",
+    "class": "semantic",
+    "target": "26.04_post-quantum-cryptography-support-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_post-quantum-cryptography-support-src1_0",
+    "top1_similarity": 0.8759
+  },
+  {
+    "question": "What does Intel TDX do for virtual machines in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_intel-trusted-domain-extensions-tdx-host-support-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_intel-trusted-domain-extensions-tdx-host-support-src1_0",
+    "top1_similarity": 0.8168
+  },
+  {
+    "question": "What NVIDIA toolkit is now installable from the Ubuntu Archives in 26.04?",
+    "class": "semantic",
+    "target": "26.04_the-nvidia-cuda-toolkit-is-now-available-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_the-nvidia-cuda-toolkit-is-now-available-src1_0",
+    "top1_similarity": 0.7854
+  },
+  {
+    "question": "What new capability lets Ubuntu build multiple versions of a package for different hardware?",
+    "class": "semantic",
+    "target": "26.04_architecture-variants-and-amd64v3-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_architecture-variants-and-amd64v3-src1_0",
+    "top1_similarity": 0.7762
+  },
+  {
+    "question": "What does the new Raspberry Pi boot layout in Ubuntu 26.04 automatically do with new boot assets?",
+    "class": "semantic",
+    "target": "26.04_a-new-boot-layout-for-raspberry-pi-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_a-new-boot-layout-for-raspberry-pi-src1_0",
+    "top1_similarity": 0.8405
+  },
+  {
+    "question": "What seed are the Ubuntu Raspberry Pi desktop images now based on in 26.04?",
+    "class": "semantic",
+    "target": "26.04_raspberry-pi-is-based-on-the-minimal-image-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_raspberry-pi-is-based-on-the-minimal-image-src1_0",
+    "top1_similarity": 0.7857
+  },
+  {
+    "question": "What now handles the creation of the swap file on Raspberry Pi desktop images in Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_swap-is-created-with-cloud-init-on-raspberry-pi-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_swap-is-created-with-cloud-init-on-raspberry-pi-src1_0",
+    "top1_similarity": 0.8441
+  },
+  {
+    "question": "What did Ubuntu add to the AppArmor package to improve sandboxing in 26.04?",
+    "class": "semantic",
+    "target": "26.04_new-apparmor-sandboxing-profiles-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_new-apparmor-sandboxing-profiles-src1_0",
+    "top1_similarity": 0.7655
+  },
+  {
+    "question": "How are notifications now organized in GNOME 50 on Ubuntu 26.04?",
+    "class": "semantic",
+    "target": "26.04_gnome-50-src1_0",
+    "rank": 1,
+    "top1_id": "26.04_gnome-50-src1_0",
+    "top1_similarity": 0.7622
+  }
+]

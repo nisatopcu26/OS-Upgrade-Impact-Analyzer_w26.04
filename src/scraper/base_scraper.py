@@ -53,11 +53,12 @@ def fetch_page(url: str, timeout: int = 10, retries: int = 3, backoff: int = 2) 
 
 
 
-def save_raw_html(html: str, version: str) ->Path:
+def save_raw_html(html: str, version: str, suffix: str = "") -> Path:
     raw_dir = Path("data/raw")
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    file_path = raw_dir / f"{version}.html"
+    filename = f"{version}{suffix}.html"
+    file_path = raw_dir / filename
     file_path.write_text(html, encoding="utf-8")
     return file_path
 

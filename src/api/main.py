@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 """M6 — FastAPI uygulaması.
 
 Çalıştır:  .venv/bin/uvicorn src.api.main:app --port 8010

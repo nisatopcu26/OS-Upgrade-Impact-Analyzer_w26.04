@@ -404,29 +404,3 @@ def test_mixed_batch_split_correctly():
     verified, rejected = verify_claims(claims, CONTEXT)
     assert len(verified) == 1 and len(rejected) == 1
     assert verified[0]["affected_package"] == "pptpd"
-
-
-def test_ion_ation_derivation_not_flagged():
-    # 2026-08-21 tur bulgusu (26.04 golden-set + gercek RabbitMQ vakasi):
-    # iddia 'mitigation', kaynak 'mitigate' -> morfoloji motoru yalniz cekim
-    # (plural/-ing) tolere ediyor, TURETME (-ate fiil -> -ion/-ation isim)
-    # kapsam disi. 'mitigation' COMMON_WORDS'te yoktu -> haksiz fabricated_term
-    # RED'i. 'deprecation'/'configuration'/'integration'/'migration'/
-    # 'isolation' zaten listede oldugu icin etkilenmemisti -- tesadufi kapsama,
-    # sistematik degil. Dar ekleme ile closed: mitigation + ayni siniftan
-    # optimization/authentication/automation/generation (henuz gorulmedi ama
-    # ayni boşluk, onden kalibre edildi).
-    context = [{"id": "26.04_rabbitmq-src1_0",
-                "text": "RabbitMQ is not directly upgradable due to feature "
-                        "flags. To mitigate this, some manual steps are "
-                        "needed.",
-                "metadata": {"source_url": "https://example.com/",
-                             "scraped_at": "2026-08-21T10:00:00"}}]
-    claims = [{"text": "RabbitMQ is not directly upgradable due to feature "
-                       "flags, requiring manual steps for mitigation.",
-               "chunk_ids": ["26.04_rabbitmq-src1_0"], "category": "package"}]
-    verified, rejected = verify_claims(claims, context,
-                                       corpus_vocab={"rabbitmq", "feature",
-                                                     "flags", "mitigate"})
-    assert len(verified) == 1 and not rejected
-    assert verified[0]["flags"] == []

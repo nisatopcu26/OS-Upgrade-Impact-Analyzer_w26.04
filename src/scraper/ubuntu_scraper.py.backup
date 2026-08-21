@@ -71,7 +71,7 @@ def scrape_version(version: str) -> list[dict]:
         if page_idx > 0:
             for s in sections:
                 if s.get("section_id"):
-                    section_id_val = s["section_id"]; s["section_id"] = f"{section_id_val}-src{page_idx}"
+                    s["section_id"] = f"p{page_idx}-{s['section_id']}"
 
         all_sections.extend(sections)
         time.sleep(1)   # kibarlık

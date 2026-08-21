@@ -28,13 +28,6 @@ GENERAL_QUERIES = [
 
 MAX_PACKAGE_CANDIDATES = 15   # LLM bağlamını şişirmemek için üst sınır
 
-# Senaryo-bazlı model override (deney amaçlı, S6): belirli versiyon
-# çiftlerinde varsayılan LLM_MODEL yerine farklı bir model kullanılır.
-# Boş bırakılırsa (silinirse) sistem her zaman LLM_MODEL kullanır.
-MODEL_OVERRIDES = {
-    ("24.04", "26.04"): "llama3.1:8b",
-}
-
 
 def node_detect(state: dict) -> dict:
     """Hedef sistemin sürümü (verilmediyse) ve paket envanteri (verilmediyse)
@@ -181,8 +174,7 @@ def node_draft_report(state: dict) -> dict:
         candidates=", ".join(state.get("package_hits", {})) or "(none matched)",
     )
 
-    model_name = MODEL_OVERRIDES.get((state["current_version"], state["target_version"]), LLM_MODEL)
-    llm = ChatOllama(model=model_name, base_url=OLLAMA_BASE_URL,
+    llm = ChatOllama(model=LLM_MODEL, base_url=OLLAMA_BASE_URL,
                      temperature=0, format="json", num_ctx=8192, num_predict=1600)
     response = llm.invoke(prompt)
 
@@ -192,4 +184,4 @@ def node_draft_report(state: dict) -> dict:
         draft = {"summary": "", "claims": []}
 
     claims = [c for c in draft.get("claims", []) if isinstance(c, dict)]
-    return {"draft_summary": draft.get("summary", ""), "draft_claims": claims, "used_model": model_name}
+    return {"draft_summary": draft.get("summary", ""), "draft_claims": claims}

@@ -30,6 +30,7 @@ class AgentState(TypedDict, total=False):
     package_hits: dict
     draft_summary: str
     draft_claims: list
+    used_model: str
     report: dict
 
 
