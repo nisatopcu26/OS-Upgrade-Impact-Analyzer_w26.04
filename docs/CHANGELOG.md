@@ -381,3 +381,64 @@ goster" ilkesinin test altyapisindaki karsiligi. Kucuk bir duzeltme
 
 **Rapor guncellemesi:** Bu bulgu docx raporuna da islendi
 (`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v6.docx`).
+
+---
+
+## 2026-08-21 — Ikinci Kanit Katmani: APT Breaks/Conflicts/Replaces/Provides
+
+**Ne yapildi:** Release notes'un anlatmadigi ama gercek paket iliskilerinde
+birebir var olan uyumluluk bilgilerini yakalamak icin yeni bir deterministik
+kanit katmani eklendi (PDF'teki postgresql-12 bulgusunun genellestirilmis
+hali). Once izole kesif yapildi: 26.04 VM'inde golden-set'teki 15 pakete
+apt-cache show calistirildi, 10/15 (%67) gercekten faydali iliski verisi
+tasidigi olculdu.
+
+Uygulama: `src/detector/apt_relations.py` (cift modlu, host=None/host=str SSH)
+gercek iliskileri ceker; `render_apt_relations_chunk()` bunu release-notes
+chunk'lariyla AYNI sekilde (id, text, metadata) bicimlendirir, source_url'e
+'apt-cache:paket' oneki eklenerek kaynagin serffafligi korunur.
+`node_package_intersect`'e entegre edildi: hedef surumun referans VM'i
+(config/hosts.json) SSH ile sorgulanir; erisilemezse SESSIZCE atlanir, yalniz
+warnings'e eklenir (cokme yok).
+
+4 test yazildi (`tests/test_apt_relations.py`): 3 saf mantik + 1 gercek 26.04
+VM'ine karsi dogrulama. Tumu yesil.
+
+**Bulgu (beklenmedik):** Ucdan uca dogrulandi -- node_package_intersect
+gercekten apt-relations chunk'lari uretiyor ve package_hits'e ekliyor
+(samba/postgresql/openssh-server/systemd/gcc/chrony/python3 icin). Ama
+grounding testinde (llama3.1:8b) hicbir dogrulanan iddia bu yeni chunk turune
+atif yapmadi -- veri pipeline'i sorunsuz calisiyordu ama model kullanmadi.
+Prompt'a acik talimat eklendi ("APT metadata iceren kaynaklar icin mutlaka
+iddia uret"), yine sonuc degismedi.
+
+Kok neden arastirildi: ayni prompt qwen2.5:7b'ye gonderildiginde 12 iddianin
+5'i apt-relations'a atif yapti -- biri (Samba/AD-DC uyari) YALNIZ apt
+verisine dayaniyordu, release notes'ta hic olmayan bir bulgu uretti. Bu,
+PDF'in "model aileleri farkli tarzda basarili/basarisiz oluyor" bulgusunun
+somut yeni bir ornegi.
+
+**Neden yapildi:** PDF'in postgresql-12 anekdotunu (release notes'un
+soylemedigi ama gercek yukseltmeyi durduran paket) sistematik, tekrar
+kullanilabilir bir kanit katmanina donusturmek icin.
+
+**Kanit:** Izole `apt-cache show` probu (10/15 paket, %67 kapsama);
+`tests/test_apt_relations.py` (4/4 yesil); izole `node_package_intersect`
+cagrisi (7 apt-relations chunk uretildi); llama3.1 vs qwen2.5 karsilastirma
+scripti ciktisi (5/12 iddia apt-relations atifli, qwen ile).
+
+**Kod degisti mi:** Evet.
+- `src/detector/apt_relations.py`: yeni dosya (`get_apt_relations`,
+  `render_apt_relations_chunk`).
+- `tests/test_apt_relations.py`: yeni dosya (4 test).
+- `src/agent/nodes.py`: `_reference_host_for()` eklendi; `node_package_intersect`
+  apt-relations katmanini cagiracak sekilde guncellendi; `PROMPT_TEMPLATE`'e
+  apt metadata talimati eklendi.
+
+**Acik konu:** llama3.1:8b'nin 24.04->26.04 senaryosundaki genel ustunlugu
+(MODEL_OVERRIDES'in mevcut gerekcesi) bu bulguyla degismiyor, ama
+paket-spesifik uyumluluk uyarilari icin secici model kullanimi (ucuncu
+boyutlu MODEL_OVERRIDES) ileride arastirilabilir -- bu turda uygulanmadi.
+
+**Rapor guncellemesi:** Bu bulgu docx raporuna da islendi
+(`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v7.docx`).

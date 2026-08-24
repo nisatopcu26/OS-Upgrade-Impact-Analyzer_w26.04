@@ -15,7 +15,28 @@ from src.agent.tools import (
     detect_current_os, ensure_fresh_data, get_installed_packages,
     search_release_notes,
 )
+from src.detector.apt_relations import get_apt_relations, render_apt_relations_chunk
 from src.rag.vector_store import get_collection, build_index
+from src.remote.ssh_runner import is_reachable
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path as _Path
+
+_HOSTS_PATH = _Path(__file__).resolve().parents[2] / "config" / "hosts.json"
+
+
+def _reference_host_for(version: str) -> str | None:
+    """config/hosts.json'dan hedef surumun referans VM'ini bulur (2. kanit
+    katmani icin -- analiz edilen sistem henuz o surume gecmedigi icin,
+    hedefin paket iliskilerini yalniz kendi VM'inde gorebiliriz).
+    Bulunamazsa/dosya yoksa None -- katman sessizce atlanir, cokmez."""
+    try:
+        hosts = json.loads(_HOSTS_PATH.read_text(encoding="utf-8"))["hosts"]
+        entry = next((h for h in hosts if version in h["label"]), None)
+        return entry["host"] if entry else None
+    except (FileNotFoundError, KeyError, StopIteration):
+        return None
 
 # Hedef sürümün genel değişikliklerini toplayan sabit sorgular (İngilizce —
 # kilitli karar: veriler ve embedding modeli İngilizce).
@@ -131,7 +152,28 @@ def node_package_intersect(state: dict) -> dict:
         if hits:
             package_hits[pkg] = hits
 
-    return {"package_candidates": candidates, "package_hits": package_hits}
+    # 2. kanit katmani (2026-08-21 turu): apt Breaks/Conflicts/Replaces/
+    # Provides -- release notes'un anlatmadigi ama apt metadata'sinda
+    # birebir var olan iliskileri yakalar (orn. samba-vfs-modules Replaces).
+    # Referans VM erisilemezse SESSIZCE atlanir (cokmez, uydurmaz) -- ama
+    # bu turu warnings'e bir kez isaretleriz.
+    apt_warning_added = False
+    ref_host = _reference_host_for(target)
+    if ref_host and is_reachable(ref_host):
+        scraped_at = datetime.now(timezone.utc).isoformat()
+        for pkg in candidates:
+            relations = get_apt_relations(pkg, host=ref_host)
+            chunk = render_apt_relations_chunk(pkg, relations, target, scraped_at)
+            if chunk:
+                package_hits.setdefault(pkg, []).append(chunk)
+    elif ref_host:
+        apt_warning_added = True
+
+    result = {"package_candidates": candidates, "package_hits": package_hits}
+    if apt_warning_added:
+        result["_apt_relations_unreachable"] = ref_host
+    return result
+
 
 
 def _format_sources(chunks: list[dict]) -> str:
@@ -146,6 +188,12 @@ STRICT RULES:
 - Every claim MUST cite at least one source id (the [id] shown above each source).
 - If the sources do not support a statement, DO NOT make it.
 - Write in English. Be specific and factual.
+- Some sources are labeled "APT package metadata" (id starts with apt-relations_).
+  These list Breaks/Conflicts/Replaces/Provides relationships that are NOT
+  mentioned in release notes but indicate real compatibility issues. When such
+  a source is present for a package, write a claim about it (e.g. what it
+  breaks or replaces), citing that source id — this is important, high-value
+  information the release notes alone do not capture.
 
 SOURCES (release notes of Ubuntu {target}):
 {general_sources}
