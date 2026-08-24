@@ -516,3 +516,41 @@ uyarilari icin secici olarak qwen'e basvurma) ileride arastirilabilir --
 bu turda uygulanmadi.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v8.docx`.
+
+---
+
+## 2026-08-24 — Quirk Listesi: Donanim Profili Dogrulamasi (Ek Bulgu)
+
+**Ne yapildi:** Quirk fonksiyonlarinin kontrol ettigi dosya/donanim yollari
+(`/run/snapd.socket`, `/usr/bin/flatpak`, `/snap/pc-kernel`,
+`/proc/device-tree`, `/boot/firmware`) uc lab VM'inde (26.04, 24.04, 22.04)
+salt-okunur olarak kontrol edildi (yalniz `test -e`, hicbir degisiklik yok).
+
+**Bulgu:** En riskli/ilginc quirk'lerin (Raspberry Pi boot duzeni, TPM disk
+sifrelemesi, RISC-V/IBM Z mimarisi kontrolleri) tetikleyicisi olan
+donanim-spesifik yollarin (`pc-kernel`, `device-tree`, `boot/firmware`)
+HICBIRI uc VM'de de bulunmadi. Snapd soketleri her yerde aktifti, flatpak
+hicbirinde kurulu degildi, `xdg-screensaver` yalniz masaustu VM'lerinde
+(26.04/24.04) vardi, sunucu-etiketli 22.04'te yoktu.
+
+**Neden yapildi:** Onceki turda quirk listesinin mevcut mimariyle uyumsuz
+oldugu (paket-listesi degil dosya sistemi/donanim durumuna baktigi) bulunmus,
+entegre edilmemisti. Bu, o kararin bizim OZEL test ortamimiz icin de
+gecerliligini ek kanitla dogruluyor: lab VM'lerimiz genel amacli QEMU/ARM64
+sanal makineler, gercek Raspberry Pi ya da TPM-FDE donanimi degil -- yani
+quirk katmani gercek bir yukseltmede bile bizim ortamimizda dogal olarak
+"bos" kalirdi.
+
+**Kanit:** Uc VM'de calistirilan `test -e` dogrulama komutlari (bu mesajin
+kendisi -- terminal ciktisi kanit).
+
+**Kod degisti mi:** Hayir -- yalniz salt-okunur dogrulama, hicbir dosya/VM
+degistirilmedi.
+
+**Onemli not:** Bu, quirk listesinin DEGERSIZ oldugu anlamina gelmiyor --
+gercek kullanicilarin (Raspberry Pi, TPM-FDE kullananlar) bu kaynaktan fayda
+gorebilecegi sonucu degismiyor. Yalniz bizim spesifik lab donanim profilimiz
+icin bu katmanin dogal olarak devre disi kalacagi netlesti.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v9.docx`
+(mevcut quirk bolumune ek not olarak islendi).
