@@ -330,3 +330,54 @@ riskli bulundu).
 (`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v5.docx`); ilk turdan kalan
 guncelligini yitirmis "acik konu" maddesi kaldirildi, tek guncel madde
 birakildi.
+
+---
+
+## 2026-08-21 — Sert-Bolme Regresyon Testi + hosts.json Zincirleme Bulgusu
+
+**Ne yapildi:**
+1. Daha once ad-hoc dogrulanan "263>256" sert-bolme senaryosu (bkz. onceki
+   giris), gercek MiniLM tokenizer'iyla calisan kalici bir pytest testine
+   donusturuldu: `test_real_tokenizer_hard_split_never_exceeds_budget`
+   (tests/test_rag.py). 13/13 test yesil, regresyon yok.
+2. Bu turda hosts.json'daki placeholder host'lar (onceki giriste) gercek
+   IP'lerle degistirilmisti. Bu, daha once hic calismamis bir lab testini
+   (test_inventory_web_vm_profile) ilk kez fiilen calistirdi -- ve test,
+   22.04 VM'inin apache2/nginx/php/postgresql icerdigi varsayimiyla
+   basarisiz oldu.
+3. SSH ile dogrudan kontrol edildi (`dpkg -l`, `apt-mark showmanual`):
+   VM gercekten 28 paketlik minimal bir kurulumdu (ubuntu-server-minimal),
+   hicbir web-sunucu bileseni kurulu degildi. Test, belirli yazilim
+   varsaymak yerine mekanizmayi (kaynak, sayac tutarliligi, cekirdek
+   paketlerin varligi) dogrulayacak sekilde yeniden yazildi.
+
+**Neden yapildi:** (1) Sert-bolme senaryosu daha once yalniz elle
+dogrulanmisti, kalici test kapsamina hic girmemisti. (2) hosts.json
+duzeltmesi (onceki giris) beklenmedik bir yan etki yaratti -- kucuk,
+masum bir altyapi duzeltmesi, daha once gizli kalan (hic calismadigi icin)
+bir testin gecersiz varsayimini ortaya cikardi.
+
+**Kanit:**
+- `tests/test_rag.py`: 13 passed (12 mevcut + 1 yeni).
+- `tests/test_remote_lab.py`: 5 passed, 4 skipped (20.04/18.04 kapali,
+  dogal skip).
+- Proje geneli `pytest -q`: 108 passed, 3 failed (yalniz macOS'a ozgu
+  host-testleri), 4 skipped -- onceki turdaki 103'e gore +5 test artik
+  gercekten kosuyor ve geciyor.
+- `dpkg -l` / `apt-mark showmanual` ciktisi (192.168.64.4 uzerinde,
+  28 paket, hepsi ubuntu-server-minimal cekirdegi).
+
+**Kod degisti mi:** Evet.
+- `tests/test_rag.py`: `test_real_tokenizer_hard_split_never_exceeds_budget`
+  eklendi.
+- `tests/test_remote_lab.py`: `test_inventory_web_vm_profile` yeniden
+  yazildi (hardcoded paket listesi kaldirildi, mekanizma dogrulamasi
+  eklendi).
+
+**Ders:** Sessizce atlanan (skip) testler, calismaya basladiklarinda
+supriz bulgular verebilir -- bu, projenin "sessizce atlama, acikca
+goster" ilkesinin test altyapisindaki karsiligi. Kucuk bir duzeltme
+(hosts.json) baska bir katmanda gizli kalmis bir sorunu acikca gosterdi.
+
+**Rapor guncellemesi:** Bu bulgu docx raporuna da islendi
+(`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v6.docx`).

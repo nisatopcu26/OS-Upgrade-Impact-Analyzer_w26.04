@@ -143,3 +143,35 @@ def test_unknown_embedding_model_rejected():
     )
     assert r.returncode != 0
     assert "Bilinmeyen embedding modeli" in r.stderr
+
+
+# --- 2026-08-21: 26.04 build sirasinda gozlenen "263 > 256" uyarisinin
+# kalici regresyon testi. O zaman ad-hoc dogrulanmisti (bkz. CHANGELOG);
+# burada GERCEK tokenizer'la (fake_counter degil) sabitleniyor.
+
+def test_real_tokenizer_hard_split_never_exceeds_budget():
+    """Gercek MiniLM tokenizer'iyla, bir cumlenin kelime sayisi budget'in
+    altinda gorunse bile token sayisi budget'i asabilir (26.04'te 263>256
+    ureten vaka). _hard_split fallback'i bu durumda devreye girip HICBIR
+    parcanin gercek tokenizer'a gore MAX_TOKENS'i asmadigini garanti eder --
+    sessiz kirpma olmaz."""
+    from src.rag.embeddings import count_tokens
+
+    # Nokta yok (tek "cumle"), cok sayida teknik-vari token: kelime sayisi
+    # dusuk gorunse de MiniLM subword tokenizer'i genisletir.
+    giant_sentence = (
+        "virtio-blk virtio-scsi virtio-net libvirt-daemon-system "
+        "qemu-system-x86 seabios-hwe edk2-ovmf apparmor-profiles "
+        "openssh-server-gssapi python3-cryptography samba-vfs-glusterfs "
+    ) * 6
+
+    env = make_envelope([make_section(giant_sentence.strip() + ".")])
+    chunks = chunk_release_notes(env, count_tokens)  # varsayilan MAX_TOKENS=250
+
+    assert len(chunks) >= 1
+    for c in chunks:
+        real_len = count_tokens(c.text)
+        assert real_len <= 250, (
+            f"chunk {c.id} gercek tokenizer'a gore {real_len} token "
+            f"(sinir 250) -- sessiz kirpma riski!"
+        )
