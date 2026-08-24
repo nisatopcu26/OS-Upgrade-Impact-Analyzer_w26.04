@@ -275,3 +275,58 @@ durumuna ozdes.
 boilerplate'ini embedding girdisinden cikarmak -- daha genis test
 gerektiriyor (126 chunk'in %17'sini etkileyen bir degisiklik, tum golden
 set uzerinde dikkatli olculmeli). Bu turda uygulanmadi.
+
+---
+
+## 2026-08-21 — Linux Kernel Kok Nedeni: Ikinci Deneme (Genis Duzeltme), Yine Basarisiz
+
+**Ne yapildi:** Ilk denemenin (baslik seyrelmesi hipotezi) yanlis ciktigini
+gosterdikten sonra, gercek teshise (126 chunk'in 21'i/%17 "version 26.04"
+gibi release-metadata boilerplate iceriyor) dayanan ikinci, daha genis bir
+duzeltme denendi: TUM chunk'lardan "Added/Changed/Removed in version X.XX."
+kalibini (yalniz 26.04 degil tum surumler) embedding girdisinden cikaran
+bir regex (`_VERSION_ANNOTATION_RE`) yazildi. 126 chunk'in 69'unu (%55)
+etkiledi -- beklenenden fazla, cunku kalip tum surum etiketlerini
+yakaliyordu.
+
+**Sonuc:** Daha da kotu -- MRR 0.970->0.968, Linux kernel sorusu rank 7->8'e
+dustu. Izole embedding testiyle nedeni bulundu: boilerplate cikarma hem
+hedef hem kardes chunk'in benzerligini dusurdu (kardes: 0.7456->0.7418,
+hedef: 0.6680->0.6599) -- ama hedef ORANTILI olarak daha fazla kaybetti,
+cunku cikarilan etiketlerin cevresindeki baglamsal yogunluk da zayifladi.
+Aradaki fark daralmak yerine genisledi.
+
+**Ders:** "Gurultu azaltma" sezgisi, embedding benzerliginin cok boyutlu
+dogasi nedeniyle her zaman beklenen yonde calismiyor -- bir chunk'tan metin
+cikarmak, o chunk'i sorguya yaklastirmak yerine uzaklastirabiliyor da.
+
+Proje disiplinine sadik kalinarak (ise yaramayan geri alinir, ikinci kez):
+`git checkout` ile geri alindi, 26.04 orijinal embedding'lerle yeniden
+indekslendi, golden set ayni sonucu (recall@1=0.960, recall@5=0.980,
+MRR=0.970, rank 7) verdigi dogrulanip kod/veri baslangic durumuna dondu.
+
+**Neden yapildi:** Ilk (dar) duzeltmenin basarisiz olmasi, teshisin kendisini
+degil, duzeltme stratejisini sorgulamayi gerektiriyordu -- gercek teshis
+(boilerplate cakismasi, %17 chunk) olcumle dogrulanmisti, o yuzden daha
+genis bir uygulamasi denenmeye deger goruldu.
+
+**Kanit:** Izole embedding karsilastirmasi (hedef: 0.6680->0.6599, kardes:
+0.7456->0.7418); `data/eval/eval_results_26_04.json` (once/sonra); 69/126
+chunk'in embedding girdisinin degistigi dogrulamasi.
+
+**Kod degisti mi:** Hayir (net etki) -- ikinci deneme de geri alindi.
+`src/rag/vector_store.py` baslangic durumuna ozdes (iki ayri hipotez
+denendi, ikisi de olcumle elendi).
+
+**Acik konu (iki tur sonrasi hala cozulmedi):** Linux kernel vakasinin kok
+nedeni dogru teshis edildi ama embedding-girdisi duzeltmeleri (dar ve genis)
+ikisi de ise yaramadi. Olasi sonraki yontemler: reranking katmani eklemek
+(PDF Bolum 18'de projenin kendi 4-reranker karsilastirmasi kaydi var, ama
+alan-spesifik korpusta zarar verdigi bulunmustu), ya da chunk sonek/onek
+stratejisini degistirmek (bu turda denenmedi, chunk sinirlarina dokunmak
+riskli bulundu).
+
+**Rapor guncellemesi:** Bu ikinci tur, docx raporuna da islendi
+(`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v5.docx`); ilk turdan kalan
+guncelligini yitirmis "acik konu" maddesi kaldirildi, tek guncel madde
+birakildi.
