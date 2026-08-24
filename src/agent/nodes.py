@@ -16,6 +16,7 @@ from src.agent.tools import (
     search_release_notes,
 )
 from src.detector.apt_relations import get_apt_relations, render_apt_relations_chunk
+from src.detector.news_debian import get_news_debian, render_news_debian_chunk
 from src.rag.vector_store import get_collection, build_index
 from src.remote.ssh_runner import is_reachable
 
@@ -166,6 +167,15 @@ def node_package_intersect(state: dict) -> dict:
             chunk = render_apt_relations_chunk(pkg, relations, target, scraped_at)
             if chunk:
                 package_hits.setdefault(pkg, []).append(chunk)
+
+            # 3. kanit katmani (2026-08-21 turu): Debian bakim notlari --
+            # dogal dil, release-notes'a en yakin format. apt-relations'tan
+            # ayri denendi cunku indirme/cikarma daha yavas -- yalniz
+            # candidates icin (en fazla 15 paket) calisir.
+            news = get_news_debian(pkg, host=ref_host)
+            news_chunk = render_news_debian_chunk(pkg, news, target, scraped_at)
+            if news_chunk:
+                package_hits.setdefault(pkg, []).append(news_chunk)
     elif ref_host:
         apt_warning_added = True
 

@@ -442,3 +442,73 @@ boyutlu MODEL_OVERRIDES) ileride arastirilabilir -- bu turda uygulanmadi.
 
 **Rapor guncellemesi:** Bu bulgu docx raporuna da islendi
 (`OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v7.docx`).
+
+---
+
+## 2026-08-21 — Ucuncu Kanit Katmani (NEWS.Debian) + Model-Bazli Kullanim Farkinin Kesin Kaniti
+
+**Ne yapildi:**
+
+1. **Quirk listesi incelendi, entegre edilmedi**: `DistUpgradeQuirks.py`
+   (1538 satir, 40 fonksiyon) golden-set paketleriyle hic ortusmedi --
+   fonksiyonlar dosya sistemi durumuna (`/snap/pc-kernel` varligi gibi) ve
+   canli apt cache nesnesine bakiyor, paket-adi listesiyle temsil
+   edilemiyor. Mevcut mimariyle uyumsuz, entegre edilmedi.
+
+2. **Ucuncu kanit katmani eklendi (NEWS.Debian)**: `src/detector/news_debian.py`
+   (.deb indirip kurmadan icini acar, en guncel girdiyi cikarir) +
+   `tests/test_news_debian.py` (4/4 yesil, biri gercek 26.04 VM'ine karsi).
+   Samba'nin NEWS.Debian'i AD-DC bolunmesini dogal dilde anlatiyordu --
+   ayni gercegi (release notes + apt Breaks) ucuncu bagimsiz kaynaktan da
+   dogrulayan bir capraz-dogrulama ornegi.
+
+3. **Model-bazli kullanim farki kesin olarak olculdu**: 26.04 grounding
+   testinde (llama3.1:8b) sonuc mukemmeldi (15/15, 0 RED, 0 FLAG) ama
+   yine hicbir iddia apt-relations/news-debian'a atif yapmadi (ucuncu
+   ardisik deneme, ayni sonuc). Bunu kesin test etmek icin MODEL_OVERRIDES
+   disindaki 22.04->24.04 senaryosu (varsayilan qwen2.5:7b) ayni katmanlarla
+   test edildi: **5/12 iddia (%42)** apt-relations/news-debian'a atif yapti,
+   biri iki kaynagi birden sentezledi (Chrony).
+
+**Ornek deger (qwen2.5:7b, 22.04->24.04):**
+- "Upgrade to 24.04 will break samba-ad-provision if its version is older
+  than 2:4.19.5+dfsg" (apt-relations) -- release notes'ta olmayan kesin
+  surum esigi.
+- "Chrony now requires each line of a source file to be terminated by a
+  trailing newline" (news-debian) -- tamamen NEWS.Debian'dan gelen
+  operasyonel tuzak bilgisi.
+
+**Neden yapildi:** Ikinci kanit katmaninin (apt-relations) ilk turda
+kullanilmama bulgusunu daha genis test etmek -- format farkinin (kisa/teknik
+vs dogal dil) sonucu degistirip degistirmedigini, ve model secimiyle
+iliskisini kesinlestirmek.
+
+**Kanit:**
+- `data/eval/grounding_report_26_04.json` (llama3.1, 15/15, apt/news atifi yok).
+- `data/eval/grounding_report_22_24.json` (qwen2.5, 12/12 draft, 5 apt/news atifli).
+- `tests/test_news_debian.py` (4/4 yesil).
+- Izole `dpkg-deb -x` incelemesi (samba/squid/dovecot-core'da NEWS.Debian
+  gercekten var, icerik dogrulandi).
+
+**Kod degisti mi:** Evet.
+- `src/detector/news_debian.py`: yeni dosya (`get_news_debian`,
+  `render_news_debian_chunk`).
+- `tests/test_news_debian.py`: yeni dosya (4 test).
+- `src/agent/nodes.py`: `node_package_intersect`'e news-debian cagrisi
+  eklendi (apt-relations'in hemen ardindan, ayni ref_host uzerinden).
+- `scripts/test_grounding_22_24.py`: yeni dosya (22.04->24.04 icin
+  karsilastirma script'i).
+
+**Sonuc:** Iki yeni kanit katmani (apt-relations + news-debian) projenin
+COGU senaryosunda (qwen2.5:7b varsayilan model oldugu icin) gercek deger
+uretiyor; yalniz MODEL_OVERRIDES'la override edilen tek senaryoda
+(24.04->26.04, llama3.1:8b) su an kullanilmiyor. Bu, llama3.1:8b'nin genel
+kaynak sadakati ustunlugunun (mevcut MODEL_OVERRIDES gerekcesi) olculmus
+bir odunlesim tasidigini gosteriyor -- karar hala gecerli ama artik bu
+odunlesim acikca belgeleniyor.
+
+**Acik konu:** Uçuncu boyutlu bir model secimi (paket-spesifik uyumluluk
+uyarilari icin secici olarak qwen'e basvurma) ileride arastirilabilir --
+bu turda uygulanmadi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v8.docx`.
