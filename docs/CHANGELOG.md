@@ -234,7 +234,7 @@ uygulanabilir, tek bir kaynaktan okunabilir olması için.
 
 ---
 
-## 2026-08-21 — Arastirma: Linux Kernel Kaybinin Gercek Kok Nedeni
+## 2026-08-24 — Arastirma: Linux Kernel Kaybinin Gercek Kok Nedeni
 
 **Ne yapildi:** "Baslik seyrelmesi" hipotezini (coklu-chunk'li bolumlerin
 devam chunk'larinda tekrarlanan baslik oneginin haksiz avantaj yarattigi)
@@ -278,7 +278,7 @@ set uzerinde dikkatli olculmeli). Bu turda uygulanmadi.
 
 ---
 
-## 2026-08-21 — Linux Kernel Kok Nedeni: Ikinci Deneme (Genis Duzeltme), Yine Basarisiz
+## 2026-08-24 — Linux Kernel Kok Nedeni: Ikinci Deneme (Genis Duzeltme), Yine Basarisiz
 
 **Ne yapildi:** Ilk denemenin (baslik seyrelmesi hipotezi) yanlis ciktigini
 gosterdikten sonra, gercek teshise (126 chunk'in 21'i/%17 "version 26.04"
@@ -333,7 +333,11 @@ birakildi.
 
 ---
 
-## 2026-08-21 — Sert-Bolme Regresyon Testi + hosts.json Zincirleme Bulgusu
+## 2026-08-24 — Sert-Bolme Regresyon Testi
+
+**Not:** Bu girisin ilk yazimi yanlislikla hosts.json bulgusuyla (2026-08-21, asagidaki ayri girise tasindi) tek baslik altinda birlestirilmisti; 2026-08-24'te tarih duzeltmesi yapildi, iki ayri gun/olay ayri girislere bolundu.
+
+## 2026-08-24 — hosts.json Zincirleme Bulgusu
 
 **Ne yapildi:**
 1. Daha once ad-hoc dogrulanan "263>256" sert-bolme senaryosu (bkz. onceki
@@ -384,7 +388,7 @@ goster" ilkesinin test altyapisindaki karsiligi. Kucuk bir duzeltme
 
 ---
 
-## 2026-08-21 — Ikinci Kanit Katmani: APT Breaks/Conflicts/Replaces/Provides
+## 2026-08-24 — Ikinci Kanit Katmani: APT Breaks/Conflicts/Replaces/Provides
 
 **Ne yapildi:** Release notes'un anlatmadigi ama gercek paket iliskilerinde
 birebir var olan uyumluluk bilgilerini yakalamak icin yeni bir deterministik
@@ -445,7 +449,7 @@ boyutlu MODEL_OVERRIDES) ileride arastirilabilir -- bu turda uygulanmadi.
 
 ---
 
-## 2026-08-21 — Ucuncu Kanit Katmani (NEWS.Debian) + Model-Bazli Kullanim Farkinin Kesin Kaniti
+## 2026-08-24 — Ucuncu Kanit Katmani (NEWS.Debian) + Model-Bazli Kullanim Farkinin Kesin Kaniti
 
 **Ne yapildi:**
 
