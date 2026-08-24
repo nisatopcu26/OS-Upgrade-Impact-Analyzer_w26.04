@@ -231,3 +231,47 @@ uygulanabilir, tek bir kaynaktan okunabilir olması için.
 **Kanıt:** Bu dosyanın kendisi; `session_log.md` (konsolidasyonun kaynağı).
 
 **Kod değişti mi:** Hayır — yalnız dokümantasyon.
+
+---
+
+## 2026-08-21 — Arastirma: Linux Kernel Kaybinin Gercek Kok Nedeni
+
+**Ne yapildi:** "Baslik seyrelmesi" hipotezini (coklu-chunk'li bolumlerin
+devam chunk'larinda tekrarlanan baslik oneginin haksiz avantaj yarattigi)
+test etmek icin `_embed_text_for()` fonksiyonu yazildi (yalniz embedding
+girdisinden onek cikarma), 26.04 yeniden indekslendi, golden set tekrar
+calistirildi. Sonuc: hicbir olculebilir degisiklik yok (recall@1/@5/MRR
+birebir ayni, hedef chunk hala rank 7'de). Izole embedding testiyle onek
+cikarmanin gercekten uygulandigi ama siralamayi degistirmeye yetmedigi
+dogrulandi -- hipotez YANLISTI.
+
+Gercek kok neden arastirildi: hedef chunk'ta "26.04" hic gecmiyordu (yalniz
+gercek kernel surum numaralari: 6.8, 6.17, 7.0). Kardes chunk (_2) iki kez
+"Added in version 26.04" diyordu -- sorgudaki "Ubuntu 26.04" ile yuzeysel
+sayisal cakisma. Korpus capinda kontrol edildi: 126 chunk'in 21'i (%17)
+kelimenin tam anlamiyla "version 26.04" iceriyor (cogunlukla release-metadata
+etiketi, gercek surum bilgisi degil). Bu, daha once bulunan Intel GPU
+vakasiyla (top-1'in alakasiz google-cloud chunk'i olmasi) ortusuyor.
+
+Proje disiplinine sadik kalinarak (ise yaramayan geri alinir): etkisiz
+duzeltme `git checkout` ile geri alindi, 26.04 orijinal embedding'lerle
+yeniden indekslendi, golden set ayni sonucu verdigi dogrulanip kod/veri
+baslangic durumuna dondu.
+
+**Neden yapildi:** Onceki turda bulunan Linux kernel top-5-kaybi vakasinin
+kok nedenini gercekten cozmek (sadece belgelemekle yetinmeyip).
+
+**Kanit:** Izole embedding karsilastirmasi (query vs _0: 0.7149, query vs
+_2 orig: 0.7456, query vs _2 stripped: 0.7318); korpus capinda "version
+26.04" sayimi (21/126); `data/eval/eval_results_26_04.json` (once/sonra
+birebir ayni).
+
+**Kod degisti mi:** Hayir (net etki) -- bir degisiklik denendi, olculebilir
+fayda saglamadigi icin geri alindi. `src/rag/vector_store.py` baslangic
+durumuna ozdes.
+
+**Acik konu:** Daha kapsamli bir duzeltme -- TUM chunk'lardan
+"Added/Changed/Removed in version X.XX" bicimindeki release-metadata
+boilerplate'ini embedding girdisinden cikarmak -- daha genis test
+gerektiriyor (126 chunk'in %17'sini etkileyen bir degisiklik, tum golden
+set uzerinde dikkatli olculmeli). Bu turda uygulanmadi.
