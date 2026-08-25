@@ -554,3 +554,52 @@ icin bu katmanin dogal olarak devre disi kalacagi netlesti.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v9.docx`
 (mevcut quirk bolumune ek not olarak islendi).
+
+---
+
+## 2026-08-25 — Dorduncu Kaynak: Gercek do-release-upgrade Yurutumesi
+
+**Ne yapildi:** Listedeki dorduncu kaynagi (do-release-upgrade log'u) test
+etmek icin, 24.04 VM'inin bir kopyasi alindi (orijinal VM'e hic dokunulmadan
+-- UTM Duplicate ozelligiyle), gercek bir 24.04->26.04 yukseltmesi
+calistirildi. Varsayilan `Supported: 0` bayragi (Canonical'in 26.04'u henuz
+resmi olarak "yukseltmeye acik" isaretlememis olmasi -- LTS'lerde standart,
+ilk point-release'e kadar suren bir politika) `-d` (developer/test)
+bayragiyla asildi.
+
+**Sonuc:** Yukseltme sorunsuz tamamlandi: 206 yeni paket, 1405 guncelleme,
+19+166 kaldirma, hicbir hata/uyari log'da gorulmedi. `VERSION_ID="26.04"`
+dogrulamasiyla gercek gecis teyit edildi. Log dosyalari (`main.log`,
+`history.log`, `apt.log` vb.) `/var/log/dist-upgrade/`'den indirilip
+projeye kaydedildi (`data/raw/dist_upgrade_history_24_26.log`,
+`data/raw/dist_upgrade_main_24_26.log`).
+
+**Karar:** Bu log'u besinci bir kanit katmanina (apt-relations, news-debian
+gibi) donusturme karari supervizor geri bildirimine birakildi -- iki nedenle:
+(1) tahmini sure 3-5 saat, sunum oncesi 5 gunluk butcede ciddi bir pay;
+(2) bu spesifik VM minimal bir kurulum oldugu icin (hosts.json bulgusunda
+da gorulmustu) gercek bir "postgresql-12 tarzi" kritik blocker cikmadi --
+parser yazilsa bile sonuc muhtemelen zayif olacak.
+
+**Neden yapildi:** Supervizorun onerdigi dorduncu kaynagi (release notes'un
+anlatmadigi, gercek yukseltme surecinde ortaya cikan bilgi) test etmek;
+onceki uc kaynagin (apt-relations, news-debian, quirk listesi) ayni
+metodolojisini tamamlamak.
+
+**Kanit:** `/var/log/dist-upgrade/` gercek log dosyalari (indirilip
+kaydedildi); `VERSION_ID="26.04"` dogrulamasi; terminal ciktisi (bu
+oturumun kendisi).
+
+**Kod degisti mi:** Hayir -- yalniz gercek sistem testi + log toplama.
+Kod tabaninda degisiklik yok.
+
+**Acik konu:** do-release-upgrade log parser'i -- gercek log alindi ve
+dogrulandi, ama kanit-katmanina donusturme (candidate paketlerle
+eslestirme, chunk formatina getirme, pipeline entegrasyonu) bu turda
+uygulanmadi. Supervizor geri bildirimine gore oncelik verilebilir.
+
+**Supervizore soruldu:** RHEL distro genislemesi kapsami (tam entegrasyon
+mu, fizibilite analizi mi) ve bu dorduncu katmanin onceligi hakkinda
+supervizore mesaj gonderildi, cevap bekleniyor.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v10.docx`.
