@@ -12,25 +12,58 @@ komut yoksa/erişilemezse uydurmak yerine boş envanter + error döner.
 
 from datetime import datetime
 
+from src.detector.os_detector import detect_os
 from src.remote.ssh_runner import run_remote
+
+# 2026-08-26 (RHEL-ailesi genislemesi): apt-mark'in dnf karsiligi. Rocky
+# Linux 10.2'de gercek VM'e karsi dogrulandi -- sudo GEREKTIRMEZ (salt
+# okunur sorgu), apt-mark ile ayni yetki seviyesinde. --qf '%{name}' ile
+# insan-okur NEVRA formati (ad-surum-release.mimari) hic parse edilmez --
+# paket adlari kendi icinde tire tasiyabildigi icin (grub2-efi-aa64 gibi)
+# string bolme guvenilir olmazdi.
+_RHEL_FAMILY = {"rhel", "rocky", "almalinux", "centos", "fedora"}
+
+
+def _is_rhel_family(host: str | None) -> bool:
+    """Hedefin (host=None ise lokalin) RHEL ailesinden olup olmadigini
+    detect_os() ile sorar -- distro adini burada tekrar sabitlemek yerine
+    tek gercek kaynaga (os_detector) basvurulur."""
+    info = detect_os(host=host)
+    return (info.get("distro") or "").lower() in _RHEL_FAMILY
 
 
 def list_manual_packages(host: str | None = None) -> list[str] | None:
-    """`apt-mark showmanual` çıktısını liste olarak döner; başarısızsa None.
+    """Kullanicinin bilincli kurdugu paketleri doner; basarisizsa None.
 
-    host=None → lokal, verilirse SSH ile uzak (çift-mod: run_remote üzerinden).
-    sorted() korunur — node_package_intersect'in aday kesmesi deterministik kalsın.
-    Timeout 30s: ~430 satırlık legacy envanter + ağ payı (ölçülü gerekçe).
+    Debian-ailesi: `apt-mark showmanual`. RHEL-ailesi: `dnf repoquery
+    --userinstalled --qf '%{name}'` (2026-08-26 eklendi, Rocky Linux 10.2'de
+    dogrulandi). Hangi komutun kullanilacagina distro tespitiyle karar
+    verilir -- sessiz varsayim yok, tespit basarisizsa None doner.
+    host=None -> lokal, verilirse SSH ile uzak (cift-mod: run_remote uzerinden).
+    sorted() korunur -- node_package_intersect'in aday kesmesi deterministik kalsin.
     """
-    res = run_remote(["apt-mark", "showmanual"], host=host, timeout=30)
+    if _is_rhel_family(host):
+        res = run_remote(["dnf", "repoquery", "--userinstalled", "--qf", "%{name}"],
+                         host=host, timeout=30)
+    else:
+        res = run_remote(["apt-mark", "showmanual"], host=host, timeout=30)
+
     if not res.ok:
         return None
     return sorted(line.strip() for line in res.stdout.splitlines() if line.strip())
 
 
-def get_package_version(name: str) -> str | None:
-    """Kurulu paketin sürümünü döner (dpkg-query, LOKAL); paket yoksa None."""
-    res = run_remote(["dpkg-query", "-W", "-f=${Version}", name], timeout=10)
+def get_package_version(name: str, host: str | None = None) -> str | None:
+    """Kurulu paketin surumunu doner; paket yoksa None.
+
+    Debian-ailesi: `dpkg-query`. RHEL-ailesi: `rpm -q --qf '%{VERSION}'`
+    (2026-08-26 eklendi, Rocky Linux 10.2'de dogrulandi -- rpm de dpkg-query
+    gibi sonuna yeni satir eklemiyor).
+    """
+    if _is_rhel_family(host):
+        res = run_remote(["rpm", "-q", "--qf", "%{VERSION}", name], host=host, timeout=10)
+    else:
+        res = run_remote(["dpkg-query", "-W", "-f=${Version}", name], host=host, timeout=10)
     return (res.stdout.strip() or None) if res.ok else None
 
 
@@ -57,8 +90,10 @@ def get_inventory(with_versions: bool = False, host: str | None = None) -> dict:
 
     packages = ({n: get_package_version(n) for n in names}
                 if (with_versions and not host) else names)
+    is_rhel = _is_rhel_family(host)
+    base_source = "dnf" if is_rhel else "apt-mark"
     return {
         "packages": packages, "count": len(names),
-        "source": "apt-mark(remote)" if host else "apt-mark",
+        "source": f"{base_source}(remote)" if host else base_source,
         "collected_at": datetime.now().isoformat(),
     }

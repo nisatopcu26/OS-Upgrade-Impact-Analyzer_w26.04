@@ -603,3 +603,62 @@ mu, fizibilite analizi mi) ve bu dorduncu katmanin onceligi hakkinda
 supervizore mesaj gonderildi, cevap bekleniyor.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v10.docx`.
+
+---
+
+## 2026-08-26 — RHEL-Ailesi Genislemesi: Ilk Somut Ilerleme
+
+**Ne yapildi:** Supervizor geri bildirimiyle (RHEL ailesi gercekten
+calistirilacak, Sali sunumuna kadar somut ilerleme gerekiyor), gercekci ve
+asamali bir plan baslatildi. Rocky Linux 10.2 (RHEL 10 ile birebir uyumlu,
+ucretsiz, ARM64 destekli) VM'i UTM'de kuruldu, SSH erisimi diger lab
+VM'leriyle tutarli sekilde saglandi.
+
+**Bulgu 1 (detect_os):** Mevcut `detect_os()` fonksiyonu HICBIR kod
+degisikligi yapilmadan Rocky'yi dogru tespit etti:
+`detect_os(host='nisa@192.168.64.5')` -> `{'distro': 'rocky', 'version':
+'10.2', 'source': 'os-release(remote)'}`. Mimarinin bastan dagitimdan
+bagimsiz tasarlandiginin somut kaniti.
+
+**Bulgu 2 (package_inventory):** Bu modul Debian-ailesine ozgu komutlara
+(apt-mark, dpkg-query) bagliydi. RHEL karsiliklari once gercek VM'e karsi
+dogrulandi: `dnf repoquery --userinstalled --qf '%{name}'` (sudo
+gerektirmez) ve `rpm -q --qf '%{VERSION}'`. Modul distro tespitine gore
+dogru komutu sececek sekilde genisletildi (`_is_rhel_family()` yardimci
+fonksiyonu, `detect_os()`'a basvurarak).
+
+**Kalite kontrolu:** Kod incelemesi sirasinda bir hata yakalandi ve
+duzeltildi: `get_inventory()`'nin `source` alani RHEL'de bile hep
+"apt-mark" yaziyordu (kopyala-yapistir kalintisi). Duzeltildi:
+`source` artik "dnf(remote)" ya da "apt-mark(remote)", duruma gore dogru.
+
+**Kalici testler:** `tests/test_rhel_family.py` yazildi (5 test,
+test_remote_lab.py deseniyle, lab-isaretli): Rocky tespiti, dnf kaynak
+etiketi, minimal kurulumun cekirdek paketleri, rpm surum sorgusu, Ubuntu
+ailesinin regresyona ugramadigi. Tumu yesil.
+
+**Regresyon kontrolu:** `pytest -m "not lab" -q`: 109 passed, 3 failed
+(yalniz macOS'a ozgu, bilinen), 17 deselected (5 yeni RHEL lab testi + 12
+eski Ubuntu lab testi). Sifir regresyon.
+
+**Neden yapildi:** Supervizorun RHEL ailesi icin talep ettigi somut
+ilerlemeyi, 5 gunluk sunum butcesi icinde gerceklestirilebilir, olculmus
+adimlarla saglamak.
+
+**Kanit:** Terminal ciktilari (bu oturumun kendisi); `tests/test_rhel_family.py`
+(5/5 yesil); `config/hosts.json` guncellemesi (Rocky girdisi eklendi).
+
+**Kod degisti mi:** Evet.
+- `src/detector/package_inventory.py`: `_is_rhel_family()`, RHEL/Debian
+  dallanmasi `list_manual_packages` ve `get_package_version`'a eklendi;
+  `get_inventory()`'deki source hatasi duzeltildi.
+- `tests/test_rhel_family.py`: yeni dosya (5 test).
+- `config/hosts.json`: Rocky Linux 10.2 girdisi eklendi.
+
+**Acik konu:** Paket envanteri seviyesinde RHEL destegi tamamlandi.
+Sonraki adimlar (surum-ustu kapsam): scraper'in Red Hat/Rocky release
+notes formatina genisletilmesi (fizibilite henuz degerlendirilmedi) ve
+RAG/grounding katmanlarinin RHEL hedef surumleri icin icerik indekslemesi
+-- bu turda yapilmadi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v11.docx`.
