@@ -780,3 +780,43 @@ hicbiri tetiklenmedi); kalici bir test (`test_rocky_analyze_end_to_end`)
 yazilmasi -- bu turda yapilmadi.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v13.docx`.
+
+---
+
+## 2026-08-27 (Devam 2) — Adversarial Test: Grounding RHEL'de Halusinasyonu Yakaliyor
+
+**Ne yapildi:** Uctan uca rapor uretiminin hic RED/FLAG uretmemesi, grounding'in
+test edilmemis olabilecegi ihtimalini akla getirdi. M8 metodolojisiyle
+tutarli bir adversarial test kuruldu: `verify_claims()` fonksiyonuna, gercek
+Rocky chunk'larina karsi KASITLI olarak uc farkli turde uydurma iddia verildi.
+
+**Sonuc:** Ucunde de dogrulanan iddia sayisi sifir, reddedilen uc oldu --
+her biri dogru sebeple:
+- Kaynaksiz iddia -> RED (`no_source_cited`)
+- Sahte chunk kimligine atif -> RED (`unknown_chunk_id`)
+- Gercek chunk'a atif ama kaynakta olmayan iddia ("PostgreSQL kaldirildi") ->
+  RED (`unverified_entity`)
+
+Ucuncu vaka ozellikle degerli: gercek bir chunk'a atif yapan ama chunk'in
+soylediginden tamamen farkli bir sey iddia eden -- tam halusinasyon
+tanimina uyan bir senaryo -- sistem tarafindan basariyla engellendi.
+
+**Kalici test:** `tests/test_rhel_end_to_end.py`'ye eklendi
+(`test_grounding_rejects_hallucinated_claims_on_rocky_content`). Dosyadaki
+iki test de yesil (49.69s). Proje geneli `pytest -m "not lab"`: 109 passed,
+3 failed (bilinen, macOS'a ozgu), 18 deselected -- sifir regresyon.
+
+**Neden yapildi:** RHEL-ailesi destegini yalniz "calisiyor" degil, "Ubuntu'daki
+kadar guvenli" oldugunu da kanitlamak -- grounding katmaninin dagitimdan
+bagimsiz olarak halusinasyonu mekanik sekilde engelledigini dogrulamak.
+
+**Kanit:** Terminal ciktisi (bu oturumun kendisi) -- 3/3 dogru RED, dogru
+reject_reason degerleriyle.
+
+**Kod degisti mi:** Evet (kucuk).
+- `tests/test_rhel_end_to_end.py`: `test_grounding_rejects_hallucinated_claims_on_rocky_content` eklendi.
+
+**Sonuc:** RHEL-ailesi destegi artik yalniz "calisiyor" degil, "Ubuntu'daki
+kadar guvenli" oldugu da kanitlanmis durumda.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v14.docx`.
