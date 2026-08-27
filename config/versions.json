@@ -30,6 +30,10 @@
         "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_1.md",
         "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_2.md"
       ]
+    },
+    "rocky-10.0": {
+      "url": "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_0.md",
+      "format": "rocky"
     }
   }
 }

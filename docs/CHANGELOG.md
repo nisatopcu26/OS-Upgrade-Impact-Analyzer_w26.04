@@ -728,3 +728,55 @@ tam bir rapor uretimi; scraper icin kalici testler yazilmasi -- bu turda
 henuz yapilmadi.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v12.docx`.
+
+---
+
+## 2026-08-27 (Devam) — Uctan Uca Gercek Rapor Uretimi Kanitlandi
+
+**Ne yapildi:** RAG hattinin (scraper->chunking->embedding->retrieval)
+dogrulanmasinin ardindan, projenin asil urununu -- kaynak gosteren,
+halusinasyonsuz etki raporunu -- RHEL ailesinde gercekten uretip
+uretemeyecegimizi test ettik. `agent/graph.py` ve `agent/nodes.py` incelendi:
+`node_refresh`'in hem `current_version` hem `target_version` icin
+`config/versions.json`'da bir giris bekledigi bulundu.
+
+`config/versions.json`'a gercek bir `rocky-10.0` girisi eklendi -- bu,
+"10.0'dan 10.2'ye" anlamli, gercek bir Rocky ic-major yukseltme senaryosu
+kurmayi sagladi.
+
+**Sonuc:** `analyze(target_version="rocky-10.2", current_version="rocky-10.0",
+host="nisa@192.168.64.5")` cagrisi calistirildi -- ve BASARILI oldu. Sistem,
+hicbir RHEL-ozel kod degisikligi gerektirmeden, tam pipeline'i
+(detect->refresh->retrieve_general->package_intersect->draft_report->grounding)
+uctan uca calistirdi. Varsayilan model (qwen2.5:7b) kullanildi.
+
+Uretilen rapor gercek ve kaynakliydi: ozet ("The upgrade from Rocky Linux
+10.0 to 10.2 will involve several changes, including the deprecation of DNF
+modularity and updates to chrony and the kernel.") ve besin uzerinde iddia,
+her biri gercek chunk kimligine, gercek GitHub kaynak URL'sine, ve
+support_score ile grounding dogrulamasina (0.654-0.94 arasi, hicbir RED/FLAG
+yok) sahipti. Dogru paket tespitleri: chrony (4.8), kernel, postgresql (18),
+mariadb (11.8), frr (10.4.1), DNF modularity kaldirma uyarisi.
+
+**Neden yapildi:** RHEL-ailesi destegini yalniz alt-katmanlarda (tespit, RAG
+retrieval) degil, kullanicinin gorecegi NIHAI URUNDE (kaynak gosteren rapor)
+da dogrulamak.
+
+**Kanit:** Terminal ciktisi (bu oturumun kendisi) -- tam JSON rapor,
+chunk_ids, support_score, sources alanlariyla.
+
+**Kod degisti mi:** Evet (kucuk).
+- `config/versions.json`: `rocky-10.0` girisi eklendi.
+
+**Sonuc:** RHEL-ailesi icin projenin ASIL urunu -- sadece tespit/envanter
+degil, kaynak gosteren gercek bir "ne bozulacak?" raporu -- uctan uca,
+gercek bir Rocky sistemine karsi, hicbir mimari degisiklik gerektirmeden
+basariyla calisti. Bu, RHEL genislemesi calismasinin bugune kadarki en
+guclu kaniti.
+
+**Acik konu:** grounding katmaninin RED/FLAG uretme davranisinin Rocky'de
+de (Ubuntu'daki gibi) dogru calistigi ayrica dogrulanmali (bu calistirmada
+hicbiri tetiklenmedi); kalici bir test (`test_rocky_analyze_end_to_end`)
+yazilmasi -- bu turda yapilmadi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v13.docx`.
