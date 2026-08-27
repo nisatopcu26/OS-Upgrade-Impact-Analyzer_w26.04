@@ -662,3 +662,69 @@ RAG/grounding katmanlarinin RHEL hedef surumleri icin icerik indekslemesi
 -- bu turda yapilmadi.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v11.docx`.
+
+---
+
+## 2026-08-27 — RHEL-Ailesi RAG Hatti Uctan Uca Calisir Hale Geldi
+
+**Ne yapildi:** Supervizorden hala cevap gelmedigi icin (5 gunden 4'u gecmisti),
+kendi kararimizla projenin asil degeri olan RAG/rapor katmanina baslandi.
+RHEL'in resmi docs.redhat.com sayfasi incelendi ama RHEL'e ozgu ozellikler
+(RHEL Lightspeed gibi) icerdigi icin Rocky VM'imize karsi kullanilmadi --
+bunun yerine Rocky'nin GitHub reposundaki saf markdown release notes'u
+(HTML parse gerektirmeyen, dosya yolu ongorulebilir: release_notes/{surum}.md)
+kaynak olarak secildi.
+
+**Onemli bulgu:** Rocky Linux, major surum gecisini (leapp ile) resmi olarak
+desteklemiyor ("perform a fresh install" deniyor) -- RHEL'in aksine. Bu,
+"gercek yukseltme testi" is parcasini kapsam disi birakmak icin saglam bir
+gerekce oldu.
+
+**Uygulama:** `src/scraper/rocky_scraper.py` yazildi -- GitHub'dan markdown
+cekip Ubuntu'nun ayni JSON semasiyla (version, section, section_id, content,
+source_url) uyumlu cikti uretiyor. Kod incelemesi sirasinda bir hata onceden
+yakalandi: section_id'yi None birakmak, mevcut extra_urls disambiguation
+mekanizmasinin (scrape_version() icinde) hic devreye girmemesine yol
+aciyordu -- 10.0/10.1/10.2'de ayni basdikli bolumler (orn. "Kernel") chunk
+kimligi cakismasi yaratirdi. section_id, basliktan turetilen bir slug'a
+cevrilerek duzeltildi.
+
+Mevcut mimariye tamamen eklemeli sekilde entegre edildi: `ubuntu_scraper.py`'nin
+PARSERS sozlugune "rocky" eklendi; `config/versions.json`'a `rocky-10.2`
+girisi (10.0'i ana kaynak, 10.1/10.2'yi extra_urls olarak birlestiren)
+eklendi. Hicbir Ubuntu kodu ya da yapilandirmasi degismedi.
+
+**Sonuc (uctan uca gercek test):**
+- `scrape_version("rocky-10.2")` -> 75 bolum (10.0'dan 35, 10.1'den 27, 10.2'den 13)
+- extra_urls disambiguation dogru calisti: 75/75 benzersiz section_id, hic cakisma yok
+- `chunk_release_notes()` -> 81 chunk, dogru kimliklendirme
+- `build_index()` -> vektor veritabanina basariyla eklendi (Ubuntu'nun 301
+  kaydina ek olarak toplam 382)
+
+**Retrieval dogrulamasi:** Ilk sorgu denemesi ("PostgreSQL version Rocky
+Linux") yaniltici gorunmustu -- dogru chunk top-15'in disinda kalmisti.
+Ama bu, sorgunun kendisinde "Rocky Linux" ifadesinin gereksiz tekrarindan
+kaynaklanan yuzeysel bir cakismaydi (Ubuntu'daki "version 26.04" boilerplate
+cakismasina benzer -- sistem kusuru degil, kotu sorgu secimi). Dogal bir
+soruyla ("What PostgreSQL version does the new release include?") tekrar
+test edildiginde, dogru chunk (benzerlik 0.7905 ile) 1. sirada cikti; ikinci
+alakali chunk da 2. sirada.
+
+**Neden yapildi:** RHEL-ailesi destegini yalniz tespit/envanter katmaninda
+degil, projenin asil degeri olan kaynak gosteren rapor uretimi katmaninda
+da gercek bir temele oturtmak.
+
+**Kanit:** Terminal ciktilari (bu oturumun kendisi); vektor veritabani
+kayit sayisi (301->382); retrieval benzerlik skorlari.
+
+**Kod degisti mi:** Evet.
+- `src/scraper/rocky_scraper.py`: yeni dosya.
+- `src/scraper/ubuntu_scraper.py`: PARSERS sozlugune "rocky" eklendi.
+- `config/versions.json`: rocky-10.2 girisi eklendi.
+
+**Acik konu:** grounding/draft_report adimlarinin Rocky ile uctan uca
+(`agent.analyze()`) test edilmesi; gercek bir Rocky paket envanterine karsi
+tam bir rapor uretimi; scraper icin kalici testler yazilmasi -- bu turda
+henuz yapilmadi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v12.docx`.

@@ -13,13 +13,18 @@ from src.scraper.base_scraper import (
     parse_release_notes,
     parse_wiki_release_notes,
 )
+from src.scraper.rocky_scraper import parse_release_notes_md
 
 CONFIG_PATH = Path("config/versions.json")
 
 # format adı -> parser fonksiyonu
+# 2026-08-27 (RHEL-ailesi genislemesi): "rocky" eklendi -- parse_release_notes_md
+# ayni (html, version, source_url) -> list[dict] sozlesmesine uyar, scrape_version()
+# hicbir degisiklik gerektirmedi.
 PARSERS = {
     "sphinx": parse_release_notes,
     "wiki": parse_wiki_release_notes,
+    "rocky": parse_release_notes_md,
 }
 
 

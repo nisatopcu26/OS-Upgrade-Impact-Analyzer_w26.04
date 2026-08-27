@@ -22,7 +22,14 @@
       "extra_urls": [
         "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/"
       ]
+    },
+    "rocky-10.2": {
+      "url": "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_0.md",
+      "format": "rocky",
+      "extra_urls": [
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_1.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_2.md"
+      ]
     }
-
   }
 }
