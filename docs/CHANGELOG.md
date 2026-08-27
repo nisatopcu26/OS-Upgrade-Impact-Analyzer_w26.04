@@ -820,3 +820,40 @@ reject_reason degerleriyle.
 kadar guvenli" oldugu da kanitlanmis durumda.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v14.docx`.
+
+---
+
+## 2026-08-27 (Devam 3) — Scraper Icin Kalici Testler, Gunun Kapanisi
+
+**Ne yapildi:** Rocky scraper'inin saf mantik kismi (URL uretimi, front-matter
+temizleme, markdown parse'i, slug uretimi, bos bolum eleme) ve gercek ag
+istegi (GitHub'dan cekme) icin `tests/test_rocky_scraper.py` yazildi --
+diger kanit katmanlarindaki (apt_relations, news_debian) desenle tutarli.
+
+**Sonuc:** 9 test, tumu yesil, gercek ag testi dahil 0.42 saniyede tamamlandi.
+Regresyon kontrolu: proje geneli `pytest -m "not lab"`: 117 passed (onceki
+109'a gore +8), 3 failed (bilinen, macOS'a ozgu), 20 deselected -- sifir
+regresyon.
+
+**Gunun (27 Agustos) genel durumu:** RHEL-ailesi genislemesi artik dort
+katmanda da kalici testlerle guvence altinda:
+- Tespit (`detect_os`)
+- Paket envanteri: 5 test (`test_rhel_family.py`)
+- Scraper: 9 test (`test_rocky_scraper.py`)
+- Uctan uca rapor uretimi + grounding guvenligi: 2 test (`test_rhel_end_to_end.py`)
+
+Toplam 16 yeni kalici test bugun eklendi.
+
+**Neden yapildi:** Bugune kadarki ad-hoc dogrulamalari kalici, tekrarlanabilir
+kanita donusturmek -- projenin kendi test-once disipliniyle tutarli.
+
+**Kanit:** Terminal ciktisi (bu oturumun kendisi) -- 9/9 test yesil, tam
+proje regresyon kontrolu.
+
+**Kod degisti mi:** Evet.
+- `tests/test_rocky_scraper.py`: yeni dosya (9 test).
+
+**Acik konu:** Linux kernel retrieval kaybi (iki hipotezle cozulemedi) --
+ucuncu bir yaklasim icin ayri bir tur planlaniyor, bu turda ertelendi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v15.docx`.
