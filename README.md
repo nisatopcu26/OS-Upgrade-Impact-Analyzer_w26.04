@@ -25,7 +25,24 @@ of being silently dropped.
   source-cited removal evidence.
 - **Validated against reality.** Lab VMs were actually upgraded and compared
   with the reports: zero false alarms across three upgrade legs; the package
-  flagged by the report was the one that blocked the real upgrade.
+  flagged by the report was the one that blocked the real upgrade. A real
+  24.04 -> 26.04 `do-release-upgrade` was also run on a cloned VM (206 new
+  packages, 1405 upgrades, zero errors) to validate the newest LTS.
+- **26.04 LTS support, measured.** Retrieval was validated with a 50-question
+  golden set (recall@5 0.980, MRR 0.970) rather than assumed; a real grounding
+  bug found during testing (a verb-to-noun derivation like `mitigate` ->
+  `mitigation` was not recognized as a match) was fixed test-first.
+- **Additional evidence layers.** Beyond release notes, the system cross-
+  references apt Breaks/Conflicts/Replaces relations and Debian NEWS.Debian
+  maintainer notes -- catching real-world blockers (e.g. a Samba AD-DC split)
+  that release notes alone don't mention.
+- **RHEL-family support (Rocky Linux).** The same architecture, unmodified,
+  correctly detects and analyzes Rocky Linux (`ID_LIKE="rhel centos fedora"`)
+  systems. A Rocky-specific scraper (GitHub-hosted markdown, no HTML parsing)
+  feeds the same chunking/embedding/retrieval pipeline. Validated end-to-end
+  against a real Rocky 9.8 -> 10.2 upgrade scenario on a real VM, with an
+  adversarial test confirming the grounding layer rejects fabricated claims
+  on RHEL-family content exactly as it does on Ubuntu.
 
 ## Architecture
 
@@ -61,7 +78,10 @@ FastAPI (REST) -> Streamlit (UI)
 
 ## Requirements
 
-- Python 3.10 or newer; Ubuntu LTS targets 18.04 through 24.04
+- Python 3.10 or newer; Ubuntu LTS targets 18.04 through 26.04
+- RHEL-family targets: Rocky Linux 9.x and 10.x (RHEL itself untested;
+  Rocky does not support in-place major-version upgrades, so a genuine
+  `leapp`-based upgrade test would require real RHEL)
 - [Ollama](https://ollama.com) with the `qwen2.5:7b` model pulled
 - Approximately 2 GB of disk space for models and the vector index
 
@@ -109,11 +129,13 @@ Ollama returns 503 before any LLM call, and an unreachable SSH target returns
 python -m pytest -q
 ```
 
-112 tests, including adversarial scenarios (fabricated chunk ids, unsourced
-claims, irrelevant citations) that assert the verifier rejects them.
-Integration tests that require live VMs carry the `lab` marker and are skipped
-automatically when the lab is offline. No test requires a real model or a
-network connection; heavy dependencies are injected and mocked.
+130+ tests, including adversarial scenarios (fabricated chunk ids, unsourced
+claims, irrelevant citations, and -- for the RHEL-family pipeline
+specifically -- fabricated claims against real Rocky Linux content) that
+assert the verifier rejects them. Integration tests that require live VMs
+carry the `lab` marker and are skipped automatically when the lab is
+offline. No test requires a real model or a network connection for the
+non-`lab` suite; heavy dependencies are injected and mocked.
 
 ## Configuration
 
@@ -121,7 +143,26 @@ Central settings live in `config/settings.py` and can be overridden through
 environment variables: the embedding model profile
 (`BAAI/bge-small-en-v1.5`, similarity threshold 0.60), the LLM model, cache
 TTL, and service ports. Supported versions and their source URLs are defined
-in `config/versions.json`.
+in `config/versions.json`, including RHEL-family entries (`rocky-9.8`,
+`rocky-10.2`) that point at Rocky Linux's GitHub-hosted markdown release
+notes rather than a scraped HTML page.
+
+## Known Limitations
+
+- **A small number of retrieval queries do not surface their target chunk
+  in the top 5 results** (e.g. "what Linux kernel version does Ubuntu 26.04
+  ship?" -- the correct chunk ranks 7th). Root cause: sibling chunks from
+  the same multi-chunk section contain unrelated version-number boilerplate
+  ("Added in version 26.04") that superficially matches the query. Three
+  independent fixes were attempted and rejected after measurement (stripping
+  the boilerplate corpus-wide made results worse; a retrieval-time lexical
+  penalty also made results worse) -- documented as an open issue rather
+  than worked around.
+- **RHEL-family support covers detection, package inventory, and the full
+  report-generation pipeline, but not a genuine `leapp` major-version
+  upgrade test** -- Rocky Linux does not support in-place major upgrades,
+  so this would require real RHEL (a free Red Hat Developer subscription)
+  rather than Rocky.
 
 ## License
 

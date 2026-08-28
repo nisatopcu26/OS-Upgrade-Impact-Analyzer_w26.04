@@ -3,34 +3,18 @@
   "current_version": "22.04",
   "target_version": "24.04",
   "model": "qwen2.5:7b",
-  "summary": "The upgrade from Ubuntu 22.04 to 24.04 will introduce several changes and potential conflicts for the installed packages, including PostgreSQL, Samba, HAProxy, Squid, SSSD, systemd, GCC, Chrony, ClamAV, Django, and OpenSSH.",
+  "summary": "The upgrade from Ubuntu 22.04 to 24.04 will introduce several changes and potential impacts on the user’s installed packages, including PostgreSQL, Samba, Chrony, and Systemd.",
   "claims": [
     {
-      "text": "The upgrade to Ubuntu 24.04 will break samba-ad-provision if its version is older than 2:4.19.5+dfsg.",
-      "chunk_ids": [
-        "apt-relations_24.04_samba"
-      ],
-      "category": "known_issue",
-      "affected_package": "samba",
-      "support_score": 0.83,
-      "sources": [
-        {
-          "chunk_id": "apt-relations_24.04_samba",
-          "url": "apt-cache:samba",
-          "scraped_at": "2026-08-24T11:57:55.891376+00:00"
-        }
-      ],
-      "flags": []
-    },
-    {
-      "text": "The PostgreSQL package in Ubuntu 24.04 includes the SQL standard MERGE command, which can be used to perform conditional SQL statements including INSERT, DELETE, and UPDATE actions.",
+      "text": "PostgreSQL 16.2 introduces new features such as SQL standard MERGE command and JSON functions, but it also provides postgresql-contrib (= 18) which may conflict with existing installations.",
       "chunk_ids": [
         "24.04_postgresql_0",
-        "24.04_postgresql_1"
+        "24.04_postgresql_1",
+        "apt-relations_24.04_postgresql"
       ],
       "category": "package",
       "affected_package": "postgresql",
-      "support_score": 0.806,
+      "support_score": 0.836,
       "sources": [
         {
           "chunk_id": "24.04_postgresql_0",
@@ -41,19 +25,24 @@
           "chunk_id": "24.04_postgresql_1",
           "url": "https://documentation.ubuntu.com/release-notes/24.04/",
           "scraped_at": "2026-08-17T09:39:26.639509"
+        },
+        {
+          "chunk_id": "apt-relations_24.04_postgresql",
+          "url": "apt-cache:postgresql",
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
         }
       ],
       "flags": []
     },
     {
-      "text": "The Samba package in Ubuntu 24.04 has been updated to the 4.19.x series, and its VFS modules are now split into samba-vfs-modules and samba-vfs-modules-extra.",
+      "text": "Samba has been updated to the 4.19.x series, breaking and replacing older versions of samba-libs and samba-vfs-modules.",
       "chunk_ids": [
         "24.04_samba_0",
-        "24.04_glusterfs_1"
+        "apt-relations_24.04_samba"
       ],
       "category": "package",
       "affected_package": "samba",
-      "support_score": 0.873,
+      "support_score": 0.851,
       "sources": [
         {
           "chunk_id": "24.04_samba_0",
@@ -61,140 +50,73 @@
           "scraped_at": "2026-08-17T09:39:26.639509"
         },
         {
-          "chunk_id": "24.04_glusterfs_1",
-          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
-          "scraped_at": "2026-08-17T09:39:26.639509"
+          "chunk_id": "apt-relations_24.04_samba",
+          "url": "apt-cache:samba",
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
         }
       ],
       "flags": []
     },
     {
-      "text": "The HAProxy package in Ubuntu 24.04 introduces a new global setting to limit the total number of HTTP/2 streams per client connection, which can be configured using 'tune.h2.fe.max-total-streams'.",
+      "text": "Chrony 4.5 introduces support for NTS/KE, which uses a separate port (4460/tcp) and requires specific certificates; this may impact systems that do not allow access to the Ubuntu NTS servers.",
       "chunk_ids": [
-        "24.04_haproxy_0",
-        "news-debian_24.04_haproxy"
-      ],
-      "category": "package",
-      "affected_package": "haproxy",
-      "support_score": 0.873,
-      "sources": [
-        {
-          "chunk_id": "24.04_haproxy_0",
-          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
-          "scraped_at": "2026-08-17T09:39:26.639509"
-        },
-        {
-          "chunk_id": "news-debian_24.04_haproxy",
-          "url": "news-debian:haproxy",
-          "scraped_at": "2026-08-24T11:57:55.891376+00:00"
-        }
-      ],
-      "flags": []
-    },
-    {
-      "text": "The Squid package in Ubuntu 24.04 now logs communication details for TLS connections and has removed support for the Gopher protocol.",
-      "chunk_ids": [
-        "24.04_squid_0"
-      ],
-      "category": "package",
-      "affected_package": "squid",
-      "support_score": 0.881,
-      "sources": [
-        {
-          "chunk_id": "24.04_squid_0",
-          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
-          "scraped_at": "2026-08-17T09:39:26.639509"
-        }
-      ],
-      "flags": []
-    },
-    {
-      "text": "The SSSD package in Ubuntu 24.04 now supports ldapi:// URLs for connections to local LDAP servers and has deprecated the 'Files provider' with a recommendation to use the 'Proxy provider'.",
-      "chunk_ids": [
-        "24.04_sssd_0"
-      ],
-      "category": "package",
-      "affected_package": "sssd",
-      "support_score": 0.801,
-      "sources": [
-        {
-          "chunk_id": "24.04_sssd_0",
-          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
-          "scraped_at": "2026-08-17T09:39:26.639509"
-        }
-      ],
-      "flags": []
-    },
-    {
-      "text": "The systemd package in Ubuntu 24.04 is now enabled by default, even when the instance is launched directly from a terminal.",
-      "chunk_ids": [
-        "apt-relations_24.04_systemd"
-      ],
-      "category": "package",
-      "affected_package": "systemd",
-      "support_score": 0.685,
-      "sources": [
-        {
-          "chunk_id": "apt-relations_24.04_systemd",
-          "url": "apt-cache:systemd",
-          "scraped_at": "2026-08-24T11:57:55.891376+00:00"
-        }
-      ],
-      "flags": [
-        {
-          "term": "terminal",
-          "reason": "term_not_in_cited_source"
-        }
-      ]
-    },
-    {
-      "text": "The Chrony package in Ubuntu 24.04 now requires each line of a source file to be terminated by a trailing newline, or the NTP sources will be ignored.",
-      "chunk_ids": [
+        "24.04_chrony_0",
         "apt-relations_24.04_chrony",
         "news-debian_24.04_chrony"
       ],
       "category": "package",
       "affected_package": "chrony",
-      "support_score": 0.869,
+      "support_score": 0.86,
       "sources": [
+        {
+          "chunk_id": "24.04_chrony_0",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-08-17T09:39:26.639509"
+        },
         {
           "chunk_id": "apt-relations_24.04_chrony",
           "url": "apt-cache:chrony",
-          "scraped_at": "2026-08-24T11:57:55.891376+00:00"
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
         },
         {
           "chunk_id": "news-debian_24.04_chrony",
           "url": "news-debian:chrony",
-          "scraped_at": "2026-08-24T11:57:55.891376+00:00"
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
         }
       ],
       "flags": []
     },
     {
-      "text": "The ClamAV package in Ubuntu 24.04 now supports unpacking CVD signature archives and has added a new callback for inspecting file content during scans.",
+      "text": "Systemd is now enabled by default, breaking and conflicting with other services like consolekit and elogind.",
       "chunk_ids": [
-        "24.04_clamav_0"
+        "24.04_enhancements_0",
+        "apt-relations_24.04_systemd"
       ],
       "category": "package",
-      "affected_package": "clamav",
-      "support_score": 0.833,
+      "affected_package": "systemd",
+      "support_score": 0.724,
       "sources": [
         {
-          "chunk_id": "24.04_clamav_0",
+          "chunk_id": "24.04_enhancements_0",
           "url": "https://documentation.ubuntu.com/release-notes/24.04/",
           "scraped_at": "2026-08-17T09:39:26.639509"
+        },
+        {
+          "chunk_id": "apt-relations_24.04_systemd",
+          "url": "apt-cache:systemd",
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
         }
       ],
       "flags": []
     },
     {
-      "text": "The Django package in Ubuntu 24.04 has been updated to version 4.2.11, providing the latest LTS bug and security fixes.",
+      "text": "The upgrade to Django 4.2.11 includes security and bug fixes, but users should review the changelogs for specific issues related to their applications.",
       "chunk_ids": [
         "24.04_django_0"
       ],
       "category": "package",
       "affected_package": "django",
-      "support_score": 0.915,
+      "support_score": 0.834,
       "sources": [
         {
           "chunk_id": "24.04_django_0",
@@ -205,13 +127,13 @@
       "flags": []
     },
     {
-      "text": "The upgrade from Ubuntu 22.04 to 24.04 will introduce a known issue with the AppArmor profile for runc in Docker, where containers cannot be promptly stopped due to deprecation warnings.",
+      "text": "The known issue with AppArmor in Docker may cause containers to be killed with SIGKILL due to denials when trying to receive a signal, requiring users to apply the provided workaround.",
       "chunk_ids": [
         "24.04_docker_0"
       ],
       "category": "known_issue",
-      "affected_package": "docker",
-      "support_score": 0.816,
+      "affected_package": null,
+      "support_score": 0.809,
       "sources": [
         {
           "chunk_id": "24.04_docker_0",
@@ -222,45 +144,65 @@
       "flags": []
     },
     {
-      "text": "The upgrade from Ubuntu 22.04 to 24.04 will include significant performance improvements and new features in PostgreSQL, such as the SQL standard MERGE command.",
+      "text": "The upgrade process will now systematically restart services affected by library upgrades, including in non-interactive scenarios such as unattended-upgrade.",
       "chunk_ids": [
-        "24.04_postgresql_0",
-        "24.04_postgresql_1"
+        "24.04_services-restart-on-unattended-upgrade_0"
       ],
       "category": "general",
       "affected_package": null,
       "support_score": 0.774,
       "sources": [
         {
-          "chunk_id": "24.04_postgresql_0",
-          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
-          "scraped_at": "2026-08-17T09:39:26.639509"
-        },
-        {
-          "chunk_id": "24.04_postgresql_1",
+          "chunk_id": "24.04_services-restart-on-unattended-upgrade_0",
           "url": "https://documentation.ubuntu.com/release-notes/24.04/",
           "scraped_at": "2026-08-17T09:39:26.639509"
         }
       ],
       "flags": []
-    }
-  ],
-  "not_found_notes": [
-    "A draft statement was removed because it lacked a verifiable source (unverified_entity): \"The GCC package in Ubuntu 24.04 now defaults to -D_FORTIFY_SOURCE=3, which greatly increases buffer overflow detection a\""
-  ],
-  "rejected_claims": [
+    },
     {
-      "text": "The GCC package in Ubuntu 24.04 now defaults to -D_FORTIFY_SOURCE=3, which greatly increases buffer overflow detection and mitigation.",
-      "reject_reason": "unverified_entity",
-      "missing_entities": [
-        "d_fortify_source"
-      ],
-      "support_score": null,
+      "text": "Samba AD DC functionality has been split into a separate package, samba-ad-dc, which must be installed if needed.",
       "chunk_ids": [
-        "apt-relations_24.04_gcc"
-      ]
+        "news-debian_24.04_samba"
+      ],
+      "category": "package",
+      "affected_package": null,
+      "support_score": 0.853,
+      "sources": [
+        {
+          "chunk_id": "news-debian_24.04_samba",
+          "url": "news-debian:samba",
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
+        }
+      ],
+      "flags": []
+    },
+    {
+      "text": "The removal of ESI (Edge Side Includes) in Squid 6.6 may impact systems that rely on this feature, which will be completely removed in future releases.",
+      "chunk_ids": [
+        "24.04_squid_0",
+        "news-debian_24.04_squid"
+      ],
+      "category": "package",
+      "affected_package": "squid",
+      "support_score": 0.841,
+      "sources": [
+        {
+          "chunk_id": "24.04_squid_0",
+          "url": "https://documentation.ubuntu.com/release-notes/24.04/",
+          "scraped_at": "2026-08-17T09:39:26.639509"
+        },
+        {
+          "chunk_id": "news-debian_24.04_squid",
+          "url": "news-debian:squid",
+          "scraped_at": "2026-08-28T10:22:34.049843+00:00"
+        }
+      ],
+      "flags": []
     }
   ],
+  "not_found_notes": [],
+  "rejected_claims": [],
   "package_candidates": [
     "php",
     "postgresql",
@@ -277,13 +219,10 @@
   ],
   "affected_packages": [
     "chrony",
-    "clamav",
     "django",
-    "haproxy",
     "postgresql",
     "samba",
     "squid",
-    "sssd",
     "systemd"
   ],
   "freshness": {
@@ -298,9 +237,9 @@
   },
   "warnings": [],
   "stats": {
-    "draft_claims": 13,
-    "verified": 12,
-    "rejected": 1,
-    "flagged": 1
+    "draft_claims": 9,
+    "verified": 9,
+    "rejected": 0,
+    "flagged": 0
   }
 }
