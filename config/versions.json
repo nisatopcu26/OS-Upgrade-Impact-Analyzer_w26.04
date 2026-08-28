@@ -34,6 +34,20 @@
     "rocky-10.0": {
       "url": "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/10_0.md",
       "format": "rocky"
+    },
+    "rocky-9.8": {
+      "url": "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_0.md",
+      "format": "rocky",
+      "extra_urls": [
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_1.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_2.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_3.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_4.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_5.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_6.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_7.md",
+        "https://raw.githubusercontent.com/rocky-linux/documentation/main/docs/releases/release_notes/9_8.md"
+      ]
     }
   }
 }

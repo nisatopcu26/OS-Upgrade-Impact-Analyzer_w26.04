@@ -64,6 +64,12 @@ def parse_release_notes_md(md: str, version: str, source_url: str) -> list[dict]
     sections = []
     current_title = None
     buf: list[str] = []
+    # 2026-08-28 DUZELTME: Rocky 9 serisinin bazi sayfalarinda (orn. 9_1.md)
+    # AYNI SAYFA icinde ayni baslik (orn. "Other Changes") birden fazla alt
+    # bolumde tekrarlaniyor -- extra_urls disambiguation'i (sayfa-lar-arasi)
+    # bunu cozmuyordu, ayni sayfa icinde section_id CAKISMASINA yol aciyordu
+    # (ChromaDB DuplicateIDError). Sayfa-ici sayac ekleniyor.
+    slug_counts: dict[str, int] = {}
 
     def _flush():
         if current_title is None:
@@ -71,10 +77,14 @@ def parse_release_notes_md(md: str, version: str, source_url: str) -> list[dict]
         content = "\n".join(buf).strip()
         content = re.sub(r"\n{3,}", "\n\n", content)
         if content:
+            base_slug = _slugify(current_title)
+            count = slug_counts.get(base_slug, 0)
+            slug_counts[base_slug] = count + 1
+            section_id = base_slug if count == 0 else f"{base_slug}-{count}"
             sections.append({
                 "version": version,
                 "section": current_title,
-                "section_id": _slugify(current_title),
+                "section_id": section_id,
                 "content": content,
                 "source_url": source_url,
             })

@@ -58,6 +58,19 @@ MODEL_OVERRIDES = {
 }
 
 
+import re
+
+
+def _version_key(version: str) -> tuple:
+    """Surum string'inden sayisal parcalari cikarip tuple olarak doner --
+    format bagimsiz dogru karsilastirma icin ("24.04" -> (24, 4),
+    "rocky-10.2" -> (10, 2), "rocky-9.8" -> (9, 8)). Sayi bulunamazsa
+    (0,) doner -- karsilastirma cokmuyor, sadece en dusuk siraya duser.
+    """
+    numbers = re.findall(r"\d+", version)
+    return tuple(int(n) for n in numbers) if numbers else (0,)
+
+
 def node_detect(state: dict) -> dict:
     """Hedef sistemin sürümü (verilmediyse) ve paket envanteri (verilmediyse)
     tespit edilir — state'te host varsa SSH ile uzaktan (roadmap v2 / S4).
@@ -79,11 +92,19 @@ def node_detect(state: dict) -> dict:
         out["packages"] = inv["packages"]
 
     # Downgrade/aynı sürüm kontrolü — current otomatik tespit edildiyse ancak
-    # burada bilinebilir (API bunu 422'ye çevirir; YY.MM string sıralaması doğru)
+    # burada bilinebilir (API bunu 422'ye çevirir).
+    # 2026-08-28 DUZELTME: duz string karsilastirmasi ("target <= current")
+    # yalniz Ubuntu'nun YY.MM formatinda (yil basta oldugu icin) tesadufen
+    # dogruydu -- Rocky'nin major.minor formatinda ("rocky-10.2" vs
+    # "rocky-9.8") karakter-bazli karsilastirma YANLIS sonuc veriyordu
+    # ("1" < "9" oldugu icin 10.2, 9.8'den kucuk sayiliyordu). Gercek RHEL
+    # 9->10 senaryosu test edilirken bulundu. Simdi sayisal parcalar
+    # cikarilip tuple olarak karsilastiriliyor -- format bagimsiz.
     current = out.get("current_version") or state.get("current_version")
-    if current and state.get("target_version") and state["target_version"] <= current:
+    target = state.get("target_version")
+    if current and target and _version_key(target) <= _version_key(current):
         raise ValueError(
-            f"Hedef sürüm ({state['target_version']}) mevcut sürümden "
+            f"Hedef sürüm ({target}) mevcut sürümden "
             f"({current}) yeni olmalı — downgrade/aynı sürüm desteklenmez.")
     return out
 

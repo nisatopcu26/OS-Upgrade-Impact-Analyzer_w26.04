@@ -857,3 +857,69 @@ proje regresyon kontrolu.
 ucuncu bir yaklasim icin ayri bir tur planlaniyor, bu turda ertelendi.
 
 **Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v15.docx`.
+
+---
+
+## 2026-08-28 — Gercek Rocky 9->10 Senaryosu, Iki Gercek Kod Hatasi, Otantiklik ve Linux Kernel Kesin Kapanis
+
+**Ne yapildi (1):** Rocky 10.0->10.2 senaryosunun "yapay" oldugu (corpus'ta
+iki gercek surum oldugu icin secilmis bir kombinasyon, gercek bir musteri
+sorusu degil) fark edildi. Gercek bir major-surum senaryosu (Rocky 9->10)
+icin GitHub reposu incelendi: 9.0-9.8 arasi 8 minor surumun markdown release
+notes'u bulundu (145 bolum), `rocky-9.8` girisi eklendi.
+
+**Bulunan hata 1 (surum karsilastirma):** `node_detect`'teki downgrade
+kontrolu duz string karsilastirmasi yapiyordu
+(`target_version <= current_version`). Ubuntu'nun YY.MM formatinda bu
+tesaduften dogruydu, Rocky'nin major.minor formatinda ("rocky-10.2" vs
+"rocky-9.8") YANLIS sonuc veriyordu. `_version_key()` eklendi: sayisal
+parcalari cikarip tuple karsilastirmasi yapar, format bagimsiz.
+
+**Bulunan hata 2 (sayfa-ici cakisma):** Rocky 9 serisinin bazi sayfalarinda
+(9_1.md) AYNI sayfa icinde ayni baslik ("Other Changes" 5 kez, "Module
+Streams" 2 kez) tekrarlaniyordu -- ChromaDB DuplicateIDError'a yol acti.
+`parse_release_notes_md()`'e sayfa-ici sayac eklendi.
+
+**Otantiklik duzeltmesi:** Ilk 9.8->10.2 testinde host parametresi gercek
+10.2 VM'ine isaret ediyordu (9.8 sadece etiketti). Gercek bir Rocky Linux
+9.8 VM'i kuruldu (UTM), `config/hosts.json`'a eklendi. Gercek VM'e karsi
+tekrar test edildi -- sonuc onceki testle neredeyse ayniydi, ama NEDENI
+dogrulandi: iki minimal Rocky kurulumunun paket listeleri gercekten cok
+benziyor (dnf repoquery ile karsilastirildi). Tam otantik dogrulama.
+
+**Linux kernel sorunu -- ucuncu deneme, ucuncu basarisizlik:** Taze veriyle
+sorun yeniden teshis edildi (21 Agustos bulgusuyla tutarli: kardes-chunk
+sayisal cakismasi). Bu sefer retrieval-SONRASI bir yeniden siralama denendi
+(`boilerplate_ratio()` ile hafif ceza, search()'e hic dokunmadan). SONUC:
+BASARISIZ -- hedef rank 7'den rank 8'e dustu. Kok neden: hedefin sorguyla
+genel benzerligi de dogal olarak dusuk. Uc farkli yontem (baslik onegi
+cikarma, genis boilerplate cikarma, retrieval-sonrasi ceza), ucu de
+durustce test edilip elendi -- KESIN olarak acik konu olarak kapatildi.
+
+**Kalici testler:** `test_version_key_compares_correctly_across_formats`,
+`test_parse_release_notes_md_dedups_repeated_headings_on_same_page`
+eklendi. `tests/test_rocky_scraper.py`: 11/11 yesil. Proje geneli
+`pytest -m "not lab"`: 119 passed (onceki 117'ye gore +2), 3 failed
+(bilinen, macOS'a ozgu), 20 deselected -- sifir regresyon.
+
+**Neden yapildi:** Dar bir test senaryosunun (10.0->10.2) gizledigi gercek
+hatalari, daha genis/gercek bir senaryo (9->10) ile ortaya cikarmak;
+onceki testin otantiklik eksigini gidermek; Linux kernel sorununu
+dorduncu kez denemek yerine kesin, durust bir kapanisla belgelemek.
+
+**Kanit:** Terminal ciktilari (bu oturumun kendisi) -- iki hata bulma
+sureci, gercek VM kurulumu, uc basarisiz Linux kernel denemesi detayi.
+
+**Kod degisti mi:** Evet.
+- `src/agent/nodes.py`: `_version_key()` eklendi, downgrade kontrolu duzeltildi.
+- `src/scraper/rocky_scraper.py`: sayfa-ici section_id cakisma duzeltmesi.
+- `tests/test_rocky_scraper.py`: 2 yeni test.
+- `config/versions.json`: `rocky-9.8` girisi.
+- `config/hosts.json`: gercek Rocky 9.8 VM'i eklendi.
+
+**Sonuc:** RHEL-ailesi genislemesi artik hem gercek bir major-surum
+senaryosuyla (9->10) hem tam otantik bir VM ile dogrulanmis durumda. Linux
+kernel retrieval sorunu uc farkli, durustce test edilmis yontemle
+kesin olarak "acik konu, dusuk-riskli cozum yok" diye kapatildi.
+
+**Rapor guncellemesi:** `OS_Upgrade_Analyzer_26_04_Kapsamli_Rapor_v16.docx`.

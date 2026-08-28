@@ -99,3 +99,46 @@ def test_scrape_rocky_release_notes_real_network():
     # section_id'ler benzersiz olmali (ayni dosya icinde)
     ids = [s["section_id"] for s in sections]
     assert len(ids) == len(set(ids))
+
+
+def test_version_key_compares_correctly_across_formats():
+    """2026-08-28: duz string karsilastirmasi ('rocky-10.2' <= 'rocky-9.8')
+    YANLIS sonuc veriyordu (karakter-bazli, '1' < '9'). _version_key,
+    sayisal parcalari cikarip tuple karsilastirmasi yapar -- format
+    bagimsiz dogru siralama."""
+    from src.agent.nodes import _version_key
+
+    # Ubuntu formatinin hala dogru calistigini dogrula (regresyon)
+    assert _version_key("24.04") < _version_key("26.04")
+
+    # Rocky formatinda ONCEDEN YANLIS olan durum simdi dogru
+    assert _version_key("rocky-9.8") < _version_key("rocky-10.2")
+    assert not (_version_key("rocky-10.2") <= _version_key("rocky-9.8"))
+
+
+def test_parse_release_notes_md_dedups_repeated_headings_on_same_page():
+    """2026-08-28: Rocky 9 serisinin bazi sayfalarinda (orn. 9_1.md) AYNI
+    SAYFA icinde ayni baslik (orn. 'Other Changes') birden fazla alt bolumde
+    tekrarlaniyor -- gercek 9->10 senaryosu test edilirken bulundu
+    (ChromaDB DuplicateIDError). Sayfa-ici sayac (-1, -2, ...) ekliyor."""
+    from src.scraper.rocky_scraper import parse_release_notes_md
+
+    md = (
+        "## Section A\n"
+        "First content block here.\n\n"
+        "## Other Changes\n"
+        "First occurrence of a repeated title.\n\n"
+        "## Section B\n"
+        "Some other content.\n\n"
+        "## Other Changes\n"
+        "Second occurrence of the same title.\n\n"
+        "## Other Changes\n"
+        "Third occurrence.\n"
+    )
+    sections = parse_release_notes_md(md, version="test-ver", source_url="https://x")
+    ids = [s["section_id"] for s in sections]
+
+    assert len(ids) == len(set(ids)), "section_id'ler benzersiz olmali"
+    assert "other-changes" in ids
+    assert "other-changes-1" in ids
+    assert "other-changes-2" in ids
